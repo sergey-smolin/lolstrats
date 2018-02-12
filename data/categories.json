@@ -1,0 +1,197 @@
+[
+  {
+    "division": [
+      {
+        "id": "1",
+        "name": "Bronze"
+      },
+      {
+        "id": "2",
+        "name": "Silver"
+      },
+      {
+        "id": "3",
+        "name": "Gold"
+      },
+      {
+        "id": "4",
+        "name": "Platinum"
+      },
+      {
+        "id": "5",
+        "name": "Diamond"
+      },
+      {
+        "id": "6",
+        "name": "Master"
+      },
+      {
+        "id": "7",
+        "name": "Challenger"
+      }
+    ]
+  }, {
+    "Party Size": [
+      {
+        "id": "8",
+        "name": "Solo"
+      },
+      {
+        "id": "9",
+        "name": "Duo"
+      },
+      {
+        "id": "10",
+        "name": "Trio"
+      },
+      {
+        "id": "11",
+        "name": "4 People"
+      },
+      {
+        "id": "12",
+        "name": "5 People"
+      }
+    ]
+  }, {
+    "Perspective": [
+      {
+        "id": "13",
+        "name": "First Person"
+      },
+      {
+        "id": "14",
+        "name": "Third Person"
+      },
+      {
+        "id": "15",
+        "name": "Several Commentators"
+      }
+    ]
+  }, {
+    "Lane Strategy": [
+      {
+        "id": "16",
+        "name": "Passive"
+      },
+      {
+        "id": "17",
+        "name": "Aggressive"
+      },
+      {
+        "id": "18",
+        "name": "Baiting"
+      },
+      {
+        "id": "19",
+        "name": "Push"
+      },
+      {
+        "id": "20",
+        "name": "Roam"
+      },
+      {
+        "id": "21",
+        "name": "Freeze"
+      },
+      {
+        "id": "22",
+        "name": "Poke"
+      },
+      {
+        "id": "23",
+        "name": "Sustain"
+      },
+      {
+        "id": "24",
+        "name": "Dive"
+      },
+      {
+        "id": "25",
+        "name": "Bruiser Bot"
+      }
+    ]
+  }, {
+    "Full Game Strategy": [
+      {
+        "id": "26",
+        "name": "Double Jungle"
+      },
+      {
+        "id": "27",
+        "name": "Split Push"
+      },
+      {
+        "id": "28",
+        "name": "Teamfight"
+      },
+      {
+        "id": "29",
+        "name": "Baron Control"
+      },
+      {
+        "id": "30",
+        "name": "Dragons Control"
+      },
+      {
+        "id": "31",
+        "name": "Pick Offs"
+      }
+    ]
+  }, {
+    "Time Frame": [
+      {
+        "id": "32",
+        "name": "Live Commentary"
+      },
+      {
+        "id": "33",
+        "name": "Recorded Game"
+      }
+    ]
+  }, {
+    "Ownership": [
+      {
+        "id": "34",
+        "name": "Own game commentary"
+      },
+      {
+        "id": "35",
+        "name": "Commenting on other people's game"
+      }
+    ]
+  }, {
+    "Character": [
+      {
+        "id": "36",
+        "name": "Educational/Tutorial"
+      },
+      {
+        "id": "37",
+        "name": "Show/Entertainment"
+      }
+    ]
+  }, {
+    "Audio": [
+      {
+        "id": "38",
+        "name": "Voice Commentary"
+      },
+      {
+        "id": "39",
+        "name": "Music"
+      }
+    ]
+  }, {
+    "Timeline": [
+      {
+        "id": "40",
+        "name": "Full Game Commentary"
+      },
+      {
+        "id": "41",
+        "name": "Compilation"
+      }
+    ]
+  }
+]

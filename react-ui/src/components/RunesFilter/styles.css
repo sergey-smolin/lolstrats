@@ -1,0 +1,8 @@
+.runes-filter {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+.runes-filter label {
+  display: flex;
+}

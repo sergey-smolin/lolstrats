@@ -1,0 +1,52 @@
+.video-result {
+  display: flex;
+  margin-bottom: 50px;
+}
+.video-link {
+  position: relative;
+  display: block;
+  height: 360px;
+  margin-right: 20px;
+}
+.video-title {
+  font-size: 20px;
+}
+.playback-button {
+  height: 80px;
+  width: 80px;
+  border-radius: 50px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: rebeccapurple;
+  transform: translate(-50%, -50%);
+}
+.playback-button-triangle {
+  width: 0;
+  height: 0;
+  border-top: 20px solid transparent;
+  border-left: 30px solid white;
+  border-bottom: 20px solid transparent;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-40%, -50%);
+}
+.video-elements-list {
+  list-style: none;
+  display: flex;
+}
+/*.video-elements-list img {
+  width: 20px;
+}*/
+.video-elements-list-item img {
+  width: 40px;
+  margin-right: 5px;
+}
+.show-categories-switch {
+  cursor: pointer;
+  display: flex;
+}
+.show-categories-text {
+  margin-right: 10px;
+}

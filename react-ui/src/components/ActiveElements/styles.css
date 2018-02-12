@@ -1,0 +1,119 @@
+.active-elements-container {
+  position: relative;
+  width: 100%;
+  z-index: 4;
+}
+.active-elements {
+  height: 100px;
+  background: #7d84ca;
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+.active-element-image {
+  height: 64px;
+  width: 64px;
+}
+.active-elements-container-fixed-position {
+  position: fixed;
+  top: 0;
+}
+.active-elements-list-item {
+  position: relative;
+  display: flex;
+  margin: 5px;
+  cursor: pointer;
+}
+/* This is repetitive code with videos close button styles */
+.close-button-container {
+  height: 20px;
+  width: 20px;
+  background: #2c2f5d;
+  border-radius: 50%;
+}
+.close-button {
+  position: relative;
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  overflow: hidden;
+}
+.remove-active-element-button-container {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+}
+.close-button::before, .close-button::after {
+  content: "";
+  position: absolute;
+  height: 2px;
+  width: 10px;
+  top: 50%;
+  margin-left: 5px;
+  margin-top: 1px;
+  background: #fff;
+}
+.close-button::before {
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+.close-button::after {
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+/* ------------------------------- */
+.search-videos-button {
+  padding: 10px;
+  background: #2c2f5d;
+  color: #ffffff;
+  box-shadow: 0px 0px 7px 1px #8f8e8e;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+.category-icon {
+  width: 64px;
+  height: 64px;
+  background: red;
+  position: relative;
+}
+.category-icon-text {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+.category-icon ul {
+  display: none;
+  list-style: none;
+  background: #ffffff;
+  padding: 10px 10px 0;
+  flex-direction: column;
+  position: absolute;
+  top: 100%;
+  left: -1px;
+  border: 1px solid gray;
+}
+.category-icon:hover ul {
+  display: flex
+}
+.category-icon ul li {
+  cursor: pointer;
+  margin-bottom: 10px;
+  display: flex;
+  padding-right: 30px;
+}
+.category-close-button-container {
+  position: absolute;
+  right: 10px;
+}

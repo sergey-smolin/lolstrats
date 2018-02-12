@@ -1,0 +1,12 @@
+.item-filter {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+.item-filter-group {
+  display: flex;
+  flex-direction: column;
+}
+.item-filter-checkbox-label {
+  display: flex;
+}

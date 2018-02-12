@@ -1,0 +1,12 @@
+.rune-image-container {
+  position: relative;
+  width: 108px;
+  height: 108px;
+}
+
+.rune-image {
+  height: 108px;
+  width: 108px;
+  position: absolute;
+  z-index: 3;
+}

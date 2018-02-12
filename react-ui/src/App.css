@@ -1,0 +1,25 @@
+body {
+  background: #2c2f5d;
+}
+iframe {
+  border: none;
+}
+.App {
+  height: 100%;
+}
+.arrow-up {
+  width: 0;
+  height: 0;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-bottom: 8px solid #ffffff;
+  align-self: center;
+}
+.arrow-down {
+  width: 0;
+  height: 0;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 8px solid #ffffff;
+  align-self: center;
+}

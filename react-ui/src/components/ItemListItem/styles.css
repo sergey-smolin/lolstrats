@@ -1,0 +1,85 @@
+.item-list-item {
+  color: white;
+  display: flex;
+  margin: 5px;
+  cursor: pointer;
+}
+.item-image {
+  height: 64px;
+  width: 64px;
+  position: absolute;
+  z-index: 3;
+}
+.item-image-container {
+  position: relative;
+  width: 64px;
+  height: 64px;
+}
+.item-list-item-tooltip {
+  position: fixed;
+  padding: 5px;
+  border: 2px solid gray;
+  display: none;
+  background: #2e2d40;
+  top: 70%;
+  left: 20%;
+  z-index: 4;
+  width: 300px;
+}
+/*.item-list-item:hover .item-list-item-tooltip {
+  display: block;
+}*/
+.item-description-class-underline {
+  text-decoration: underline;
+}
+.item-description-class-italic {
+  font-style: italic;
+}
+.item-description-class-ancor {
+  color: red;
+}
+.item-description-class-active {
+  color: green;
+}
+.item-description-class-aura {
+  color: pink;
+}
+.item-description-class-consumable {
+  color: violet;
+}
+.item-description-class-flavorText {
+  color: turquoise;
+}
+.item-description-class-groupLimit {
+  color: #4d7496;
+}
+.item-description-class-levelLimit {
+  color: lime;
+}
+.item-description-class-mainText {
+  color: darkgray;
+}
+.item-description-class-mana {
+  color: blue;
+}
+.item-description-class-passive {
+  color: brown;
+}
+.item-description-class-rules {
+  color: yellow;
+}
+.item-description-class-scaleHealth {
+  color: purple;
+}
+.item-description-class-scaleLevel {
+  color: orange;
+}
+.item-description-class-stats {
+  color: #673ab7;
+}
+.item-description-class-unique {
+  color: #8a8348;
+}
+.item-description-class-unlockedPassive {
+  text-decoration: line-through;
+}

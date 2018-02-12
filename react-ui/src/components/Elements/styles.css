@@ -1,0 +1,42 @@
+.elements-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.tabs-container {
+  overflow-y: auto;
+}
+.tabs-container-top-margin {
+  margin-top: 100px;
+}
+.tabs-controls {
+  display: flex;
+  align-items: center;
+}
+.tabs {
+  list-style: none;
+  display: flex;
+}
+.tab {
+  margin-right: 10px;
+  cursor: pointer;
+  background: white;
+  padding: 10px 20px;
+}
+.tab-page {
+  display: none;
+}
+.tab-page.active {
+  display: block;
+}
+.elements-filter {
+  padding: 10px;
+  font-size: 16px;
+}
+.items-selector-container {
+  display: flex;
+  align-items: flex-start;
+}
+.runes-selector-container {
+  display: flex;
+}

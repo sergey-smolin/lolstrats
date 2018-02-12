@@ -1,0 +1,27 @@
+.modal-container {
+  display: none;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 4;
+  position: fixed;
+  top: 0;
+}
+.modal-container-visible {
+  display: block;
+}
+.modal-window {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+.modal-button {
+  margin-top: 10px;
+  cursor: pointer;
+}

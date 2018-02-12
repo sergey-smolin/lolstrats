@@ -1,0 +1,37 @@
+.add-video-instruction {
+  height: 30px;
+  font-size: 15px;
+  background: #c5c5a1;
+  display: flex;
+  align-items: center;
+}
+.add-video-controls {
+  width: 100%;
+}
+.add-video-controls-fixed-position {
+  position: fixed;
+  top: 0;
+  z-index: 4;
+}
+.video-url-input-container {
+  height: 35px;
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  padding: 10px;
+}
+.video-url-input-container input {
+  padding: 8px;
+  font-size: 14px;
+  margin-right: 10px;
+}
+.url-error {
+  color: red;
+  margin-left: 10px;
+}
+.input-error {
+  border: 1px solid red;
+}
+.tabs-container-add-video-top-margin {
+  margin-top: 185px;
+}

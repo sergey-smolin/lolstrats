@@ -1,0 +1,21 @@
+.toolbar {
+  height: 80px;
+  background: #ffffff;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.app-title {
+  margin-right: auto;
+}
+.app-title-link,
+.flat-link {
+  text-decoration: none;
+}
+.toolbar-flat-button {
+  background: #ffffff;
+  padding: 10px;
+  color: blue;
+  cursor: pointer;
+  margin-left: 10px;
+}

@@ -1,0 +1,7 @@
+.video-player {
+  display: flex;
+  flex-direction: column;
+  color: #ffffff;
+  width: 480px;
+  padding: 50px;
+}

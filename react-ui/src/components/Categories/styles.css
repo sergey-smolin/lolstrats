@@ -1,0 +1,4 @@
+.category-list-item label,
+.category-list-item input {
+  cursor: pointer;
+}

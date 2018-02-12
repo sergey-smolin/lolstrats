@@ -1,0 +1,26 @@
+{
+  "name": "loltuts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.16.2",
+    "material-ui": "^0.20.0",
+    "moment": "^2.20.1",
+    "mongodb": "^3.0.1",
+    "node-fetch": "^1.7.3",
+    "prop-types": "^15.6.0",
+    "query-string": "^5.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node server",
+    "heroku-postbuild": "cd react-ui/ && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
+  },
+  "cacheDirectories": [
+    "node_modules",
+    "react-ui/node_modules"
+  ],
+  "author": "",
+  "license": "ISC"
+}
