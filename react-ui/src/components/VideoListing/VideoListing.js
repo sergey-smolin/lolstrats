@@ -4,6 +4,8 @@ import classnames from 'classnames';
 import { Link } from 'react-router-dom'
 import './styles.css';
 
+const CURRENT_PATCH = '8.3.1';
+
 class VideoListing extends Component {
   constructor(props) {
     super(props);
@@ -20,10 +22,10 @@ class VideoListing extends Component {
     return this.props.elementsNamesIds ? this.props.elementsNamesIds.map(data => {
       let result;
       if (data.type === 'champions') {
-        result = `https://ddragon.leagueoflegends.com/cdn/7.24.1/img/champion/${data.id}.png`;
+        result = `https://ddragon.leagueoflegends.com/cdn/${CURRENT_PATCH}/img/champion/${data.id}.png`;
       }
       if (data.type === 'items') {
-        result = `https://ddragon.leagueoflegends.com/cdn/7.24.1/img/item/${data.id}.png`;
+        result = `https://ddragon.leagueoflegends.com/cdn/${CURRENT_PATCH}/img/item/${data.id}.png`;
       }
       if (data.type === 'runes') {
         result = `/images/runes/${data.id}.png`;
