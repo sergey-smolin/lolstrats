@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import ActiveElements from '../ActiveElements/ActiveElements';
+import ActiveElements from '../../ActiveElements/ActiveElements';
 import Categories from '../../Categories/Categories';
 import ChampionList from '../../ChampionList/ChampionList';
 import ItemFilter from '../../ItemFilter/ItemFilter';
@@ -70,7 +70,12 @@ class Elements extends Component {
     this.setState({ runesPath: update });
   }
   setActiveTab(activeTabIndex) {
-    this.setState({ activeTabIndex, elementsFilter: '' });
+    this.setState({
+      activeTabIndex,
+      elementsFilter: '',
+      filteredChampions: this.props.champions,
+      filteredItems: this.props.items
+   });
   }
   toggleActiveCategory(category) {
     if (this.state.activeCategoriesMap[category.name]) {

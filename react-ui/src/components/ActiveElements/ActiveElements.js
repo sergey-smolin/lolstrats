@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import './styles.css';
 
+const CURRENT_PATCH = '8.3.1';
+
 class ActiveElements extends Component {
   createChampionElement(data) {
     // hover effect for runes
@@ -56,11 +58,11 @@ class ActiveElements extends Component {
       switch (type) {
         case 'champions':
           element = this.createChampionElement(data);
-          src = `https://ddragon.leagueoflegends.com/cdn/7.24.1/img/champion/${data.id}.png`;
+          src = `https://ddragon.leagueoflegends.com/cdn/${CURRENT_PATCH}/img/champion/${data.id}.png`;
           break;
         case 'items':
           element = this.createItemElement(data);
-          src = `https://ddragon.leagueoflegends.com/cdn/7.24.1/img/item/${data.id}.png`;
+          src = `https://ddragon.leagueoflegends.com/cdn/${CURRENT_PATCH}/img/item/${data.id}.png`;
           break;
         case 'runes':
           element = this.createRuneElement(data);

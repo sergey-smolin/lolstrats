@@ -76,7 +76,12 @@ class Elements extends Component {
     this.setState({ runesPath: update });
   }
   setActiveTab(activeTabIndex) {
-    this.setState({ activeTabIndex, elementsFilter: '' });
+    this.setState({
+      activeTabIndex,
+      elementsFilter: '',
+      filteredChampions: this.props.champions,
+      filteredItems: this.props.items
+    });
   }
   checkLimits(type) {
     switch(type) {
