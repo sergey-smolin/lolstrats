@@ -221,7 +221,7 @@ class Elements extends Component {
 
     return result;
   }
-  searchVideos(query) {
+  searchVideos() {
     this.props.history.push('/videos/list?' + this.createSearchQuery());
   }
   playVideo(id, data) {
@@ -311,7 +311,8 @@ class Elements extends Component {
           categories={this.state.activeCategories}
           removeActiveElement={this.removeActiveElement}
           removeActiveCategory={this.removeActiveCategory}
-          searchVideos={this.searchVideos}
+          actionButtonCallback={this.searchVideos}
+          actionButtonText="Search"
           fixedPosition={this.state.fixedPosition}
         />
         <div className={classnames({

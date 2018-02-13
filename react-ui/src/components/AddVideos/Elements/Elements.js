@@ -347,7 +347,8 @@ class Elements extends Component {
               elements={this.state.activeElements}
               removeActiveElement={this.removeActiveElement}
               removeActiveCategory={this.removeActiveCategory}
-              addVideo={this.addVideo}
+              actionButtonCallback={this.addVideo}
+              actionButtonText="Add"
             />
             <div className="add-video-instruction">
               Pick elements related to the video

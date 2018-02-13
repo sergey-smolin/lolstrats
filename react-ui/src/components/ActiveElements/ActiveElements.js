@@ -113,8 +113,8 @@ class ActiveElements extends Component {
         <ul className="active-elements">
           {jsx}
         </ul>
-        <div className="search-videos-button" onClick={this.props.searchVideos}>
-          Search
+        <div className="search-videos-button" onClick={this.props.actionButtonCallback}>
+          {this.props.actionButtonText}
         </div>
       </div>
     );
