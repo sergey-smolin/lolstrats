@@ -6,6 +6,8 @@ import {
 } from 'react-router-dom'
 import './App.css';
 import Toolbar from './components/Toolbar/Toolbar';
+import Login from './components/Login/Login';
+import Register from './components/Register/Register';
 import SearchVideos from './components/Elements/Elements';
 import AddVideos from './components/AddVideos/Elements/Elements';
 import ListVideos from './components/Videos/Videos';
@@ -30,8 +32,10 @@ class App extends Component {
     this.renderSearchVideos = this.renderSearchVideos.bind(this);
     this.renderAddVideos = this.renderAddVideos.bind(this);
     this.renderListVideos = this.renderListVideos.bind(this);
+    this.renderLogIn = this.renderLogIn.bind(this);
     this.showStaticModal = this.showStaticModal.bind(this);
     this.hideStaticModal = this.hideStaticModal.bind(this);
+    this.setUserData = this.setUserData.bind(this);
   }
   getCommonProps() {
     return {
@@ -47,13 +51,25 @@ class App extends Component {
       hideLoader: this.hideLoader,
       showModal: this.showModal,
       showStaticModal: this.showStaticModal,
-      hideStaticModal: this.hideStaticModal
+      hideStaticModal: this.hideStaticModal,
+      setUserData: this.setUserData,
+      user: this.state.user
     };
+  }
+  setUserData(user) {
+    this.setState({ user });
   }
   prepareChampionsData(json) {
     return Object.keys(json.data).map(key => json.data[key]);
   }
   componentWillMount() {
+    fetch('/api/user', {
+      credentials: 'include'
+    }).then(res => res.json()).then(res => {
+      if (res.result === 'success') {
+        this.setState({ user: res.data });
+      }
+    });
     this.setState({
       itemsLoading: true,
       championsLoading: true,
@@ -124,14 +140,24 @@ class App extends Component {
       />
     );
   }
+  renderLogIn(props) {
+    return (
+      <Login
+        {...props}
+        {...this.getCommonProps()}
+      />
+    );
+  }
   render() {
     return (
       <MuiThemeProvider>
         <div className="App">
           <Router>
             <div>
-              <Toolbar />
+              <Toolbar {...this.getCommonProps()} />
               <Route exact path="/" component={this.renderSearchVideos}/>
+              <Route exact path="/login" component={this.renderLogIn}/>
+              <Route exact path="/register" component={Register}/>
               <Route exact path="/add" component={this.renderAddVideos}/>
               <Route exact path="/videos/list" component={this.renderListVideos}/>
               <Route exact path="/video/:id" component={VideoPlayer}/>

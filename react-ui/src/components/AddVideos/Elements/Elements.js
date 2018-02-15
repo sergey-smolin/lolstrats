@@ -37,6 +37,11 @@ class Elements extends Component {
     this.handleScroll = this.handleScroll.bind(this);
     this.filterElements = this.filterElements.bind(this);
   }
+  componentWillMount() {
+    if (!this.props.user) {
+      this.props.history.replace('/login?redirect=add')
+    }
+  }
   componentDidMount() {
     window.addEventListener('scroll', this.handleScroll);
   }

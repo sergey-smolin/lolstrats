@@ -1,0 +1,33 @@
+.register-container {
+  padding: 50px;
+  margin: 50px;
+  background: #ffffff;
+}
+.register-input-label {
+  margin-bottom: 5px;
+}
+.register-input-container {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+}
+.register-button {
+  margin-top: 20px;
+  background: #2c2f5d;
+  color: #ffffff;
+}
+.register-input {
+  padding: 10px;
+  font-size: 18px;
+  margin-right: 10px;
+}
+.register-error-message {
+  color: red;
+}
+.registration-successful {
+  color: #ffffff;
+  margin: 50px;
+}
+.registration-response-error {
+  color: red;
+}

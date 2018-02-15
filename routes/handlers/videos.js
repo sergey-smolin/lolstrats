@@ -103,7 +103,12 @@ const addVideoToDB = (video, ytData, res) => {
           query = { ...video, goldStandard: true };
         }
         if (query) {
-          query = { ...query, createdAt: new Date(), ytData };
+          query = {
+            ...query,
+            createdAt: new Date(),
+            ytData,
+            submittedBy: req.session.user.username
+          };
           collection.insertOne(query, function (err, doc) {
             let response = {};
             if (err) {
@@ -129,6 +134,9 @@ const addVideoToDB = (video, ytData, res) => {
 };
 
 const addVideo = (req, res) => {
+  if (!req.session.username) {
+    res.send(401);
+  }
   fetch('https://www.googleapis.com/youtube/v3/videos?' +
     queryString({
       'id': req.body.id,

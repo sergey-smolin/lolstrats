@@ -1,10 +1,20 @@
 const express = require('express');
 const path = require('path');
+const session = require('express-session');
 var bodyParser = require('body-parser');
 const apiRoutes = require('./routes/api');
 const app = express();
 
 const port = process.env.PORT || 5000;
+
+app.use(session({
+  secret: 'The Sun is shining',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: false
+  }
+}))
 
 app.use(bodyParser.json());
 app.use('/api', apiRoutes);

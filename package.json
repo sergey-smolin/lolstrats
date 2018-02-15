@@ -4,7 +4,9 @@
   "description": "",
   "main": "server.js",
   "dependencies": {
+    "bcrypt": "^1.0.3",
     "express": "^4.16.2",
+    "express-session": "^1.15.6",
     "material-ui": "^0.20.0",
     "moment": "^2.20.1",
     "mongodb": "^3.0.1",

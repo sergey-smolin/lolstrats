@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import classnames from 'classnames'
+import RaisedButton from 'material-ui/RaisedButton';
 import './styles.css';
 
 class Modal extends Component {
@@ -14,7 +15,13 @@ class Modal extends Component {
       >
         <div className="modal-window">
           {this.props.modalMessage}
-          <div className="modal-button" onClick={this.props.hideModal}>OK</div>
+          <RaisedButton
+            onClick={this.props.hideModal}
+            className="modal-button"
+            label="OK"
+            backgroundColor="#2c2f5d"
+            labelColor="#ffffff"
+          />
         </div>
       </div>
     );
