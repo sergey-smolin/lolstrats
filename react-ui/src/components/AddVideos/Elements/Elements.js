@@ -38,7 +38,7 @@ class Elements extends Component {
     this.filterElements = this.filterElements.bind(this);
   }
   componentWillMount() {
-    if (!this.props.user) {
+    if (this.props.user === null) {
       this.props.history.replace('/login?redirect=add')
     }
   }
@@ -58,6 +58,9 @@ class Elements extends Component {
       this.setState({
         filteredItems: newProps.items
       })
+    }
+    if (this.props.user !== null && newProps.user === null) {
+      this.props.history.replace('/login?redirect=add')
     }
   }
   handleScroll(event) {
@@ -236,6 +239,7 @@ class Elements extends Component {
       headers: {
         'Content-Type': 'application/json'
       },
+      credentials: 'include',
       body: JSON.stringify(body)
     }).then(res => res.json())
     .then(json => {

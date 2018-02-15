@@ -13,7 +13,6 @@ class Toolbar extends Component {
       method: 'POST',
       credentials: 'include'
     }).then(res => res.json()).then(res => {
-      console.log(this);
       if (res.result === "error") {
         this.props.showModal("There was an error logging out");
       }

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import queryString from 'query-string';
 import classnames from 'classnames';
 import './styles.css';
 

@@ -32,7 +32,6 @@ const getCategories = (req, res) => {
 // })
 
 apiRouter.get('/user', (req, res) => {
-  console.log(req.session);
   if (req.session.user) {
     res.send({
       result: 'success',

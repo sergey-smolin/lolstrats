@@ -74,7 +74,7 @@ const getVideos = (req, res) => {
   });
 };
 
-const addVideoToDB = (video, ytData, res) => {
+const addVideoToDB = (video, ytData, user, res) => {
   const collection = db.getDb().collection('videos');
   collection.findOne(video, function (err, doc) {
     let response = {};
@@ -107,7 +107,7 @@ const addVideoToDB = (video, ytData, res) => {
             ...query,
             createdAt: new Date(),
             ytData,
-            submittedBy: req.session.user.username
+            submittedBy: user.username
           };
           collection.insertOne(query, function (err, doc) {
             let response = {};
@@ -134,7 +134,7 @@ const addVideoToDB = (video, ytData, res) => {
 };
 
 const addVideo = (req, res) => {
-  if (!req.session.username) {
+  if (!req.session.user) {
     res.send(401);
   }
   fetch('https://www.googleapis.com/youtube/v3/videos?' +
@@ -144,7 +144,7 @@ const addVideo = (req, res) => {
       'key': API_KEY
     })
   ).then(res => res.json()).then(json => {
-    addVideoToDB(req.body, json.items[0].snippet, res);
+    addVideoToDB(req.body, json.items[0].snippet, req.session.user, res);
   });
 };
 

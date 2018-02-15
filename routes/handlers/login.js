@@ -46,7 +46,6 @@ loginRouter.post('/', (req, res) => {
         req.session.user = {
           username
         };
-        console.log(req.session);
         res.send({
           result: "success",
           message: "Sign in successful",

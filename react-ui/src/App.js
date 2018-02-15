@@ -13,8 +13,6 @@ import AddVideos from './components/AddVideos/Elements/Elements';
 import ListVideos from './components/Videos/Videos';
 import VideoPlayer from './components/VideoPlayer/VideoPlayer';
 import Modal from './components/Modal/Modal';
-import StaticModal from './components/StaticModal/StaticModal';
-import Loader from './components/Loader/Loader';
 import state from './state';
 
 const SRID = 11;
@@ -68,6 +66,8 @@ class App extends Component {
     }).then(res => res.json()).then(res => {
       if (res.result === 'success') {
         this.setState({ user: res.data });
+      } else {
+        this.setState({ user: null });
       }
     });
     this.setState({

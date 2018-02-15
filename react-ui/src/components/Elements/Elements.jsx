@@ -15,7 +15,6 @@ import './styles.css';
 
 const TOOLBAR_HEIGHT = 80;
 const LIMITS_ENABLED = false;
-const LOADING = 'Loading...';
 // const CHAMPION_TYPE = 'champions';
 // const ITEM_TYPE = 'items';
 // const RUNE_TYPE = 'runes';
