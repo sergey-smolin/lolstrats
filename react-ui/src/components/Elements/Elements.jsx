@@ -311,6 +311,7 @@ class Elements extends Component {
           removeActiveElement={this.removeActiveElement}
           removeActiveCategory={this.removeActiveCategory}
           actionButtonCallback={this.searchVideos}
+          searchCriteriaText="Click on icons below to create a build to search"
           actionButtonText="Search"
           fixedPosition={this.state.fixedPosition}
         />

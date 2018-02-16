@@ -6,8 +6,11 @@
   align-items: center;
   padding: 0 25px;
 }
-.app-title {
+.app-title-container {
   margin-right: auto;
+}
+.app-title {
+  margin: 0;
 }
 .app-title-link,
 .flat-link {
@@ -15,10 +18,10 @@
 }
 .toolbar-link {
   color: #353535;
+  padding: 10px;
 }
 .toolbar-flat-button {
   background: #ffffff;
-  padding: 10px;
   color: blue;
   cursor: pointer;
   margin-left: 10px;

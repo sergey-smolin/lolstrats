@@ -110,11 +110,16 @@ class ActiveElements extends Component {
         'active-elements-container': true,
         'active-elements-container-fixed-position': this.props.fixedPosition
       })}>
-        <ul className="active-elements">
-          {jsx}
-        </ul>
-        <div className="search-videos-button" onClick={this.props.actionButtonCallback}>
-          {this.props.actionButtonText}
+        <div className="active-elements-main-part">
+          <ul className="active-elements">
+            {jsx}
+          </ul>
+          <div className="search-videos-button" onClick={this.props.actionButtonCallback}>
+            {this.props.actionButtonText}
+          </div>
+        </div>
+        <div className="active-elements-instruction">
+          {this.props.searchCriteriaText}
         </div>
       </div>
     );

@@ -1,7 +1,9 @@
 .active-elements-container {
-  position: relative;
   width: 100%;
   z-index: 4;
+}
+.active-elements-main-part {
+  position: relative;
 }
 .active-elements {
   height: 100px;
@@ -23,6 +25,11 @@
   display: flex;
   margin: 5px;
   cursor: pointer;
+}
+.active-elements-instruction {
+  height: 20px;
+  background: beige;
+  padding: 10px;
 }
 /* This is repetitive code with videos close button styles */
 .close-button-container {

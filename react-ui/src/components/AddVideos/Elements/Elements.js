@@ -356,12 +356,10 @@ class Elements extends Component {
               elements={this.state.activeElements}
               removeActiveElement={this.removeActiveElement}
               removeActiveCategory={this.removeActiveCategory}
+              searchCriteriaText="Click on icons below to specify a build"
               actionButtonCallback={this.addVideo}
               actionButtonText="Add"
             />
-            <div className="add-video-instruction">
-              Pick elements related to the video
-            </div>
           </div>
           <div className={classnames({
             'tabs-container': true,

@@ -42,7 +42,10 @@ class Toolbar extends Component {
 
     return (
       <div className="toolbar">
-        <h1 className="app-title"><Link className="app-title-link" to="/">LoL Strats</Link></h1>
+        <div className="app-title-container">
+          <h1 className="app-title"><Link className="app-title-link" to="/">LoL Strats</Link></h1>
+          Find LoL videos by build
+        </div>
         <div className="toolbar-flat-button">
           <Link className="flat-link toolbar-link" to="/">Find videos</Link>
         </div>
