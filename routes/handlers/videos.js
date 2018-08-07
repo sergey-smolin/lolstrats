@@ -6,7 +6,7 @@ const db = require('../../db');
 
 const API_KEY = 'AIzaSyDP8_FbyKEyuT_-fIa1l7LcUsJzW-rV5j0';
 const GOLD_STANDARD_PRESENT = 'A video with this url has already been submitted, we will review your submission and if it represents the video better we will be using your submission instead';
-const ERROR_ADDING_RECORD = 'There was an error adding video';
+const ERROR_ADDING_RECORD = 'There was an error adding the video';
 const SUCCESS_ADDING_VIDEO = 'The video has been added successfully';
 const SUBMISSION_EXISTS = 'Submission already exists';
 const CODE_ERROR_ADDING_RECORD = 0;
