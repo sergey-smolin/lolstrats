@@ -21,6 +21,7 @@ import {
   fetchCategories
 } from './actions/rootActions';
 import Modal from './components/Modal/Modal';
+import StaticModal from './components/StaticModal/StaticModal';
 
 class App extends Component {
   constructor(props) {
@@ -54,8 +55,8 @@ class App extends Component {
   hideModal() {
     this.setState({ modalMessage: null });
   }
-  showStaticModal(lMessage) {
-    this.setState({ lMessage });
+  showStaticModal(staticModalMessage) {
+    this.setState({ staticModalMessage });
   }
   hideStaticModal() {
     this.setState({ staticModalMessage: null });
@@ -72,6 +73,9 @@ class App extends Component {
     return (
       <AddVideos
         {...props}
+        showModal={this.showModal} 
+        showStaticModal={this.showStaticModal}
+        hideStaticModal={this.hideStaticModal}
         {...this.props}
       />
     );
@@ -89,16 +93,18 @@ class App extends Component {
       <Login
         {...props}
         {...this.props}
+        setUserData={this.setUserData}
       />
     );
   }
   render() {
+    debugger;
     return (
       <MuiThemeProvider>
         <div className="App">
           <Router>
             <div>
-              <Toolbar {...this.props} />
+              <Toolbar {...this.props} user={this.props.user || this.state.user} showModal={this.showModal} setUserData={this.setUserData} />
               <Route exact path="/" component={this.renderSearchVideos}/>
               <Route exact path="/login" component={this.renderLogIn}/>
               <Route exact path="/register" component={Register}/>
@@ -111,6 +117,9 @@ class App extends Component {
             modalMessage={this.state.modalMessage}
             hideModal={this.hideModal}
           />
+          <StaticModal
+            staticModalMessage={this.state.staticModalMessage}
+          />
         </div>
       </MuiThemeProvider>
     );
@@ -118,20 +127,15 @@ class App extends Component {
 }
 
 const mapStateToProps = state => ({
-  itemsLoading: state.itemsLoading,
-  championsLoading: state.championsLoading,
-  runesLoading: state.runesLoading,
   items: state.items,
+  itemsLoading: state.itemsLoading,
   champions: state.champions,
+  championsLoading: state.championsLoading,
   runes: state.runes,
+  runesLoading: state.runesLoading,
   categories: state.categories,
+  categoriesLoading: state.categoriesLoading,
   tree: state.tree,
-  showLoader: state.showLoader,
-  hideLoader: state.hideLoader,
-  showModal: state.showModal,
-  showStaticModal: state.showStaticModal,
-  hideStaticModal: state.hideStaticModal,
-  setUserData: state.setUserData,
   user: state.user
 });
 

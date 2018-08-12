@@ -37,7 +37,6 @@ class Elements extends Component {
     this.addActiveElement = this.addActiveElement.bind(this);
     this.removeActiveElement = this.removeActiveElement.bind(this);
     this.searchVideos = this.searchVideos.bind(this);
-    this.closeVideoPlayer = this.closeVideoPlayer.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
     this.filterElements = this.filterElements.bind(this);
   }
@@ -222,9 +221,6 @@ class Elements extends Component {
   searchVideos() {
     this.props.history.push('/videos/list?' + this.createSearchQuery());
   }
-  closeVideoPlayer() {
-    this.setState({ playVideo: {} });
-  }
   filterElements(event) {
     const filter = event.target.value;
     this.setState({ elementsFilter: filter });
@@ -292,7 +288,6 @@ class Elements extends Component {
       <VideoPlayer
         id={this.state.playVideo.id}
         data={this.state.playVideo.data}
-        closeVideoPlayer={this.closeVideoPlayer}
       /> : null;
     const elementsFilter = [0, 1].includes(this.state.activeTabIndex) ?
       <input className="elements-filter" type="text" value={this.state.elementsFilter}
@@ -347,7 +342,6 @@ class Elements extends Component {
           </ul>
         </div>
         {videos}
-        {playVideo}
       </div>
     );
   }
