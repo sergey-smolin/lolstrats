@@ -9,14 +9,18 @@ class ChampionListItem extends Component {
       loaded: false
     };
     this.handleLoad = this.handleLoad.bind(this);
+    this.addActiveElement = this.addActiveElement.bind(this);
   }
   handleLoad() {
     this.setState({ loaded: true });
   }
+  addActiveElement() {
+    this.props.addActiveElement(this.props.champion, 'champions');
+  }
 
   render() {
     return (
-      <li className="champion-list-item" onClick={() => this.props.addActiveElement(this.props.champion, 'champions')}>
+      <li className="champion-list-item" onClick={this.addActiveElement}>
         <div className="champion-image-container">
           <img
             className="champion-image"

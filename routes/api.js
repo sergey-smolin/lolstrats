@@ -4,8 +4,6 @@ const videoRoutes = require('./handlers/video');
 const login = require('./handlers/login');
 const logout = require('./handlers/logout');
 const register = require('./handlers/register');
-const fs = require('fs');
-const db = require('../db');
 const ERRORS = require('./errors');
 
 const apiRouter = express.Router();

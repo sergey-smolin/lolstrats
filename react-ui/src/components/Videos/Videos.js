@@ -15,7 +15,6 @@ class Videos extends Component {
       videosLoading: true,
       youtubeVideosLoading: true
     };
-    this.playVideo = this.playVideo.bind(this);
   }
   componentWillMount() {
     const { champions, items, runes, categories } = this.props;
@@ -83,11 +82,6 @@ class Videos extends Component {
       this.setState({ videos: json.result, videosLoading: false });
     }
   }
-  playVideo(event) {
-    const id = event.currentTarget.getAttribute('data-id');
-    const data = event.currentTarget.getAttribute('data-data');
-    this.props.playVideo(id, data);
-  }
 
   render() {
     const categoriesMap = this.props.categories.reduce((memo, next) => {
@@ -111,7 +105,6 @@ class Videos extends Component {
               key={key}
               id={id}
               data={data}
-              playVideo={this.props.playVideo}
             />
           );
         })}

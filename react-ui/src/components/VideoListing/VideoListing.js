@@ -12,11 +12,7 @@ class VideoListing extends Component {
     this.state = {
       showCategories: false
     };
-    this.playVideo = this.playVideo.bind(this);
     this.toggleCategories = this.toggleCategories.bind(this);
-  }
-  playVideo() {
-    this.props.playVideo(this.props.id, this.props.data);
   }
   getElements() {
     return this.props.elementsNamesIds ? this.props.elementsNamesIds.map(data => {

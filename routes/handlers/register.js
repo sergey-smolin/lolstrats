@@ -1,6 +1,6 @@
 const express = require('express');
 const ERRORS = require('../errors');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt-nodejs');
 const saltRounds = 10;
 
 db = require('../../db');
@@ -26,7 +26,8 @@ registerRouter.post('/', (req, res) => {
         message: "A user with this username already exists"
       })
     } else {
-      bcrypt.hash(password, saltRounds, function(err, hash) {
+      const salt = bcrypt.genSaltSync(saltRounds);
+      bcrypt.hash(password, salt, null, function(err, hash) {
         collection.insertOne({ username, hash }, (err, doc) => {
           if (err) {
             res.send({

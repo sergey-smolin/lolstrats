@@ -1,6 +1,6 @@
 const express = require('express');
 const ERRORS = require('../errors');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt-nodejs');
 const saltRounds = 10;
 
 db = require('../../db');

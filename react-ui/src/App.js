@@ -4,6 +4,7 @@ import {
   BrowserRouter as Router,
   Route
 } from 'react-router-dom'
+import { connect } from 'react-redux';
 import './App.css';
 import Toolbar from './components/Toolbar/Toolbar';
 import Login from './components/Login/Login';
@@ -12,19 +13,21 @@ import SearchVideos from './components/Elements/Elements';
 import AddVideos from './components/AddVideos/Elements/Elements';
 import ListVideos from './components/Videos/Videos';
 import VideoPlayer from './components/VideoPlayer/VideoPlayer';
+import {
+  fetchUser,
+  fetchItems,
+  fetchChampions,
+  fetchRunes,
+  fetchCategories
+} from './actions/rootActions';
 import Modal from './components/Modal/Modal';
-import state from './state';
-
-const SRID = 11;
-const API_ENDPOINT_ITEMS = '/api/items';
-const API_ENDPOINT_CHAMPIONS = '/api/champions';
-const API_ENDPOINT_RUNES = '/api/runes';
-const API_ENDPOINT_CATEGORIES = '/api/categories';
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = state;
+    this.state = {
+      modalMessage: ''
+    };
     this.showModal = this.showModal.bind(this);
     this.hideModal = this.hideModal.bind(this);
     this.renderSearchVideos = this.renderSearchVideos.bind(this);
@@ -35,74 +38,15 @@ class App extends Component {
     this.hideStaticModal = this.hideStaticModal.bind(this);
     this.setUserData = this.setUserData.bind(this);
   }
-  getCommonProps() {
-    return {
-      itemsLoading: this.state.itemsLoading,
-      championsLoading: this.state.championsLoading,
-      runesLoading: this.state.runesLoading,
-      items: this.state.items,
-      champions: this.state.champions,
-      runes: this.state.runes,
-      categories: this.state.categories,
-      tree: this.state.tree,
-      showLoader: this.showLoader,
-      hideLoader: this.hideLoader,
-      showModal: this.showModal,
-      showStaticModal: this.showStaticModal,
-      hideStaticModal: this.hideStaticModal,
-      setUserData: this.setUserData,
-      user: this.state.user
-    };
-  }
   setUserData(user) {
     this.setState({ user });
   }
-  prepareChampionsData(json) {
-    return Object.keys(json.data).map(key => json.data[key]);
-  }
   componentWillMount() {
-    fetch('/api/user', {
-      credentials: 'include'
-    }).then(res => res.json()).then(res => {
-      if (res.result === 'success') {
-        this.setState({ user: res.data });
-      } else {
-        this.setState({ user: null });
-      }
-    });
-    this.setState({
-      itemsLoading: true,
-      championsLoading: true,
-      runesLoading: true,
-      categoriesLoaing: true
-    });
-    fetch(API_ENDPOINT_ITEMS).then(res => res.json())
-      .then(items => this.setState({
-        itemsLoading: false,
-        items: this.prepareSRItemData(items.data),
-        tree: items.tree
-      }));
-    fetch(API_ENDPOINT_CHAMPIONS).then(res => res.json())
-      .then(champions => this.setState({
-        champions: this.prepareChampionsData(champions),
-        championsLoading: false
-      }));
-    fetch(API_ENDPOINT_RUNES).then(res => res.json())
-      .then(runes => this.setState({ runes, runesLoading: false }));
-    fetch(API_ENDPOINT_CATEGORIES).then(res => res.json())
-      .then(categories => this.setState({ categories, categoriesLoading: false }));
-  }
-  prepareSRItemData(data) {
-    return Object.keys(data).reduce(
-      (memo, next) => {
-        const item = data[next];
-        if (item.maps[SRID]) {
-          item.description = `<description>${item.description}</description>`;
-          return [ ...memo, item ];
-        }
-        return memo;
-      },
-    []);
+    this.props.fetchUser();
+    this.props.fetchItems();
+    this.props.fetchChampions();
+    this.props.fetchRunes();
+    this.props.fetchCategories();
   }
   showModal(modalMessage) {
     this.setState({ modalMessage });
@@ -120,7 +64,7 @@ class App extends Component {
     return (
       <SearchVideos
         {...props}
-        {...this.getCommonProps()}
+        {...this.props}
       />
     );
   }
@@ -128,7 +72,7 @@ class App extends Component {
     return (
       <AddVideos
         {...props}
-        {...this.getCommonProps()}
+        {...this.props}
       />
     );
   }
@@ -136,7 +80,7 @@ class App extends Component {
     return (
       <ListVideos
         {...props}
-        {...this.getCommonProps()}
+        {...this.props}
       />
     );
   }
@@ -144,7 +88,7 @@ class App extends Component {
     return (
       <Login
         {...props}
-        {...this.getCommonProps()}
+        {...this.props}
       />
     );
   }
@@ -154,7 +98,7 @@ class App extends Component {
         <div className="App">
           <Router>
             <div>
-              <Toolbar {...this.getCommonProps()} />
+              <Toolbar {...this.props} />
               <Route exact path="/" component={this.renderSearchVideos}/>
               <Route exact path="/login" component={this.renderLogIn}/>
               <Route exact path="/register" component={Register}/>
@@ -173,4 +117,30 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = state => ({
+  itemsLoading: state.itemsLoading,
+  championsLoading: state.championsLoading,
+  runesLoading: state.runesLoading,
+  items: state.items,
+  champions: state.champions,
+  runes: state.runes,
+  categories: state.categories,
+  tree: state.tree,
+  showLoader: state.showLoader,
+  hideLoader: state.hideLoader,
+  showModal: state.showModal,
+  showStaticModal: state.showStaticModal,
+  hideStaticModal: state.hideStaticModal,
+  setUserData: state.setUserData,
+  user: state.user
+});
+
+const mapDispacthToProps = {
+  fetchUser,
+  fetchItems,
+  fetchChampions,
+  fetchRunes,
+  fetchCategories
+};
+
+export default connect(mapStateToProps, mapDispacthToProps)(App); 
