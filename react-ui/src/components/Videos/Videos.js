@@ -17,6 +17,7 @@ class Videos extends Component {
     };
   }
   componentWillMount() {
+    debugger;
     const { champions, items, runes, categories } = this.props;
     if (champions.length && items.length && runes.length && categories.length) {
       this.getVideos(this.props);
@@ -60,7 +61,7 @@ class Videos extends Component {
       } else if (prop === 'items') {
         return props.items
           .reduce((memo, next) => {
-            if (parsedQuery[prop].split(',').includes(next.id)) {
+            if (parsedQuery[prop].split(',').includes(next.id.toString())) {
               return [ ...memo, next.name ];
             }
             return memo;
@@ -68,7 +69,7 @@ class Videos extends Component {
       } else if (prop === 'runes') {
         return props.runes
           .reduce((memo, next) => {
-            if (parsedQuery[prop].split(',').includes(next.id)) {
+            if (parsedQuery[prop].split(',').includes(next.id.toString())) {
               return [ ...memo, next.name ];
             }
             return memo;

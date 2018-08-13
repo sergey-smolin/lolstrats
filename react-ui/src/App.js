@@ -13,13 +13,8 @@ import SearchVideos from './components/Elements/Elements';
 import AddVideos from './components/AddVideos/Elements/Elements';
 import ListVideos from './components/Videos/Videos';
 import VideoPlayer from './components/VideoPlayer/VideoPlayer';
-import {
-  fetchUser,
-  fetchItems,
-  fetchChampions,
-  fetchRunes,
-  fetchCategories
-} from './actions/rootActions';
+import { fetchUser, setUserData } from './actions/user';
+import { fetchItems, fetchChampions, fetchRunes, fetchCategories } from './actions/rootActions';
 import Modal from './components/Modal/Modal';
 import StaticModal from './components/StaticModal/StaticModal';
 
@@ -40,7 +35,7 @@ class App extends Component {
     this.setUserData = this.setUserData.bind(this);
   }
   setUserData(user) {
-    this.setState({ user });
+    this.props.setUserData(user);
   }
   componentWillMount() {
     this.props.fetchUser();
@@ -98,7 +93,6 @@ class App extends Component {
     );
   }
   render() {
-    debugger;
     return (
       <MuiThemeProvider>
         <div className="App">
@@ -127,16 +121,16 @@ class App extends Component {
 }
 
 const mapStateToProps = state => ({
-  items: state.items,
-  itemsLoading: state.itemsLoading,
-  champions: state.champions,
-  championsLoading: state.championsLoading,
-  runes: state.runes,
-  runesLoading: state.runesLoading,
-  categories: state.categories,
-  categoriesLoading: state.categoriesLoading,
-  tree: state.tree,
-  user: state.user
+  items: state.rootReducer.items,
+  itemsLoading: state.rootReducer.itemsLoading,
+  champions: state.rootReducer.champions,
+  championsLoading: state.rootReducer.championsLoading,
+  runes: state.rootReducer.runes,
+  runesLoading: state.rootReducer.runesLoading,
+  categories: state.rootReducer.categories,
+  categoriesLoading: state.rootReducer.categoriesLoading,
+  tree: state.rootReducer.tree,
+  user: state.user.user
 });
 
 const mapDispacthToProps = {
@@ -144,7 +138,8 @@ const mapDispacthToProps = {
   fetchItems,
   fetchChampions,
   fetchRunes,
-  fetchCategories
+  fetchCategories,
+  setUserData
 };
 
 export default connect(mapStateToProps, mapDispacthToProps)(App); 

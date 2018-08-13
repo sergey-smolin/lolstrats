@@ -3,12 +3,8 @@ import {
     API_ENDPOINT_CHAMPIONS,
     API_ENDPOINT_RUNES,
     API_ENDPOINT_CATEGORIES,
-    API_ENDPOINT_USER
 } from '../constants/endpoints';
 
-export const FETCH_USER_START = 'FETCH_USER_START';
-export const FETCH_USER_SUCCESS = 'FETCH_USER_SUCCESS';
-export const FETCH_USER_ERROR = 'FETCH_USER_ERROR';
 export const FETCH_ITEMS_START = 'FETCH_ITEMS_START';
 export const FETCH_ITEMS_SUCCESS = 'FETCH_ITEMS_SUCCESS';
 export const FETCH_ITEMS_ERROR = 'FETCH_ITEMS_ERROR';
@@ -21,32 +17,6 @@ export const FETCH_RUNES_ERROR = 'FETCH_RUNES_ERROR';
 export const FETCH_CATEGORIES_START = 'FETCH_CATEGORIES_START';
 export const FETCH_CATEGORIES_SUCCESS = 'FETCH_CATEGORIES_SUCCESS';
 export const FETCH_CATEGORIES_ERROR = 'FETCH_CATEGORIES_ERROR';
-
-const requestUser = () => ({
-    type: FETCH_USER_START
-})
-
-const requestUserSuccess = user => ({
-    user,
-    type: FETCH_USER_SUCCESS
-})
-
-const requestUserError = () => ({
-    type: FETCH_USER_ERROR
-})
-
-export const fetchUser = () => dispatch => {
-    dispatch(requestUser());
-    return fetch(API_ENDPOINT_USER, {
-        credentials: 'include'
-        }).then(res => res.json()).then(res => {
-        if (res.result === 'success') {
-            dispatch(requestUserSuccess(res.data));
-        } else {
-            dispatch(requestUserError(res.error));
-        }
-    });
-}
 
 const requestItems = () => ({
     type: FETCH_ITEMS_START

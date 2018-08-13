@@ -20,6 +20,12 @@ class Login extends Component {
     this.handleInputChange = this.handleInputChange.bind(this);
   }
 
+  componentWillReceiveProps(newProps) {
+    if (newProps.user) {
+      this.redirect();
+    }
+  }
+
   validateInputs() {
     let stateUpdate = {};
     if (this.state.username === '') {
