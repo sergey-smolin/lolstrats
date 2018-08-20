@@ -1,22 +1,30 @@
-import { ADD_ACTIVE_CATEGORY, REMOVE_ACTIVE_CATEGORY } from '../actions/elements';
+import { ADD_ACTIVE_CATEGORY, REMOVE_ACTIVE_CATEGORY, ADD_ACTIVE_ELEMENT, REMOVE_ACTIVE_ELEMENT } from '../actions/elements';
 
 const initialState = {
     activeCategories: [],
-    activeCategoriesMap: {}
+    activeCategoriesMap: {},
+    activeElements: [],
+    activeElementsMap: {
+        champions: {},
+        items: {},
+        runes: {}
+    }
 };
 
 export default function elementsReducer(state = initialState, action) {
     switch(action.type) {
-        case REMOVE_ACTIVE_CATEGORY:
+        case REMOVE_ACTIVE_CATEGORY: {
             const { name } = state.activeCategories.splice(action.index, 1)[0];
             return {
+                ...state,
                 activeCategories: [ ...state.activeCategories ],
                 activeCategoriesMap: {
                     ...state.activeCategoriesMap,
                     [name]: false
                 }
             };
-        case ADD_ACTIVE_CATEGORY:
+        }
+        case ADD_ACTIVE_CATEGORY: {
             const { category } = action;
             return {
                 ...state,
@@ -26,6 +34,37 @@ export default function elementsReducer(state = initialState, action) {
                     [category.name]: true
                 }
             };
+        }
+        case ADD_ACTIVE_ELEMENT: {
+            const { elementType, element } = action;
+            const activeElements = [ ...state.activeElements, { type: elementType, data: element } ];
+            return {
+                ...state,
+                activeElements,
+                activeElementsMap: {
+                    ...state.activeElementsMap,
+                    [elementType]: {
+                        ...state.activeElementsMap[elementType],
+                        [element.id]: true
+                    }
+                }
+            };
+        }
+        case REMOVE_ACTIVE_ELEMENT: {
+            const { type, data } = state.activeElements.splice(action.index, 1)[0];
+            const activeElements = [ ...state.activeElements ];
+            return {
+                ...state,
+                activeElements,
+                activeElementsMap: {
+                    ...state.activeElementsMap,
+                    [type]: {
+                        ...state.activeElementsMap[type],
+                        [data.id]: false
+                    }
+                }
+            };
+        }
     }
     return state;
 }

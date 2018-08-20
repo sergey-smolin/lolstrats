@@ -13,7 +13,12 @@ import Videos from '../Videos/Videos';
 import VideoPlayer from '../VideoPlayer/VideoPlayer';
 import state from './state';
 import './styles.css';
-import { addActiveCategory, removeActiveCategory } from '../../actions/elements';
+import {
+  addActiveElement,
+  removeActiveElement,
+  addActiveCategory,
+  removeActiveCategory
+} from '../../actions/elements';
 
 const TOOLBAR_HEIGHT = 80;
 // const CHAMPION_TYPE = 'champions';
@@ -99,40 +104,19 @@ class Elements extends Component {
   addActiveCategory(category) {
     if (this.props.activeCategoriesMap[category.id]) return;
     this.props.addActiveCategory(category);
-      }
+  }
   removeActiveCategory(index) {
     this.props.removeActiveCategory(index);
-      }
+  }
   addActiveElement(element, type) {
-    if (this.state.activeElementsMap[type][element.id]) return;
-    const activeElements = [ ...this.state.activeElements, { type, data: element } ];
-    this.setState({
-      activeElements,
-      activeElementsMap: {
-        ...this.state.activeElementsMap,
-        [type]: {
-          ...this.state.activeElementsMap[type],
-          [element.id]: true
-        }
-      }
-    });
+    if (this.props.activeElementsMap[type][element.id]) return;
+    this.props.addActiveElement(element, type);
   }
   removeActiveElement(index) {
-    const { type, data } = this.state.activeElements.splice(index, 1)[0];
-    const activeElements = [ ...this.state.activeElements ];
-    this.setState({
-      activeElements,
-      activeElementsMap: {
-        ...this.state.activeElementsMap,
-        [type]: {
-          ...this.state.activeElementsMap[type],
-          [data.id]: false
-        }
-      }
-    });
+    this.props.removeActiveElement(index)
   }
   createSearchQuery() {
-    const initialData = this.state.activeElements.reduce(
+    const initialData = this.props.activeElements.reduce(
       (memo, { type, data }) => {
         if (type === 'champions') {
           memo.champions.push(parseInt(data.key, 10));
@@ -239,7 +223,7 @@ class Elements extends Component {
     return (
       <div className="elements-container">
         <ActiveElements
-          elements={this.state.activeElements}
+          elements={this.props.activeElements}
           categories={this.props.activeCategories}
           removeActiveElement={this.removeActiveElement}
           removeActiveCategory={this.removeActiveCategory}
@@ -291,11 +275,15 @@ class Elements extends Component {
 }
 
 const mapStateToProps = state => ({
+  activeElements: state.elements.activeElements,
+  activeElementsMap: state.elements.activeElementsMap,
   activeCategories: state.elements.activeCategories,
-  activeCategoriesMap: state.elements.activeCategoriesMap,
+  activeCategoriesMap: state.elements.activeCategoriesMap
 });
 
 const mapDispatchToProps = {
+  addActiveElement,
+  removeActiveElement,
   addActiveCategory,
   removeActiveCategory
 }
