@@ -8,5 +8,6 @@ export default {
   runes: [],
   runesLoading: true,
   categories: [],
+  categoriesMap: {},
   categoriesLoaing: true,
 }

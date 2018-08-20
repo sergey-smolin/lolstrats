@@ -121,15 +121,15 @@ class App extends Component {
 }
 
 const mapStateToProps = state => ({
-  items: state.rootReducer.items,
-  itemsLoading: state.rootReducer.itemsLoading,
-  champions: state.rootReducer.champions,
-  championsLoading: state.rootReducer.championsLoading,
-  runes: state.rootReducer.runes,
-  runesLoading: state.rootReducer.runesLoading,
-  categories: state.rootReducer.categories,
-  categoriesLoading: state.rootReducer.categoriesLoading,
-  tree: state.rootReducer.tree,
+  items: state.root.items,
+  itemsLoading: state.root.itemsLoading,
+  champions: state.root.champions,
+  championsLoading: state.root.championsLoading,
+  runes: state.root.runes,
+  runesLoading: state.root.runesLoading,
+  categories: state.root.categories,
+  categoriesLoading: state.root.categoriesLoading,
+  tree: state.root.tree,
   user: state.user.user
 });
 

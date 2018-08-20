@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import classnames from 'classnames';
 import ActiveElements from '../ActiveElements/ActiveElements';
 import ChampionList from '../ChampionList/ChampionList';
@@ -10,11 +11,11 @@ import RunesFilter from '../RunesFilter/RunesFilter';
 import RunesList from '../RunesList/RunesList';
 import Videos from '../Videos/Videos';
 import VideoPlayer from '../VideoPlayer/VideoPlayer';
-import state from './state.js';
+import state from './state';
 import './styles.css';
+import { addActiveCategory, removeActiveCategory } from '../../actions/elements';
 
 const TOOLBAR_HEIGHT = 80;
-const LIMITS_ENABLED = false;
 // const CHAMPION_TYPE = 'champions';
 // const ITEM_TYPE = 'items';
 // const RUNE_TYPE = 'runes';
@@ -80,25 +81,10 @@ class Elements extends Component {
       filteredItems: this.props.items
     });
   }
-  checkLimits(type) {
-    switch(type) {
-      case 'champions':
-        if (this.state.activeCounts.champions === 1) return false;
-        break;
-      case 'items':
-        if (this.state.activeCounts.items === 3) return false;
-        break;
-      case 'runes':
-        if (this.state.activeCounts.runes === 3) return false;
-        break;
-      default:
-        return true;
-    }
-  }
   toggleActiveCategory(category) {
-    if (this.state.activeCategoriesMap[category.name]) {
+    if (this.props.activeCategoriesMap[category.name]) {
       let index;
-      this.state.activeCategories.find((cat, idx) => {
+      this.props.activeCategories.find((cat, idx) => {
         if (cat.name === category.name) {
           index = idx;
           return true;
@@ -111,56 +97,17 @@ class Elements extends Component {
     }
   }
   addActiveCategory(category) {
-    if (this.state.activeCategoriesMap[category.id]) return;
-    if (LIMITS_ENABLED) {
-      if (!this.checkLimits('categories')) {
-        this.setState({ limitOverflow: true, limitOverflowMessage: 1 });
-        return;
+    if (this.props.activeCategoriesMap[category.id]) return;
+    this.props.addActiveCategory(category);
       }
-    }
-    const activeCategories = [ ...this.state.activeCategories, category ];
-    this.setState({
-      activeCategories,
-      activeCounts: {
-        ...this.state.activeCounts,
-        categories: this.state.activeCounts.categories + 1
-      },
-      activeCategoriesMap: {
-        ...this.state.activeCategoriesMap,
-        [category.name]: true
-      }
-    });
-  }
   removeActiveCategory(index) {
-    const { name } = this.state.activeCategories.splice(index, 1)[0];
-    const activeCategories = [ ...this.state.activeCategories ];
-    this.setState({
-      activeCategories,
-      activeCounts: {
-        ...this.state.activeCounts,
-        categories: this.state.activeCounts.categories - 1
-      },
-      activeCategoriesMap: {
-        ...this.state.activeCategoriesMap,
-        [name]: false
+    this.props.removeActiveCategory(index);
       }
-    });
-  }
   addActiveElement(element, type) {
     if (this.state.activeElementsMap[type][element.id]) return;
-    if (LIMITS_ENABLED) {
-      if (!this.checkLimits(type)) {
-        this.setState({ limitOverflow: true, limitOverflowMessage: 1 });
-        return;
-      }
-    }
     const activeElements = [ ...this.state.activeElements, { type, data: element } ];
     this.setState({
       activeElements,
-      activeCounts: {
-        ...this.state.activeCounts,
-        [type]: this.state.activeCounts[type] + 1
-      },
       activeElementsMap: {
         ...this.state.activeElementsMap,
         [type]: {
@@ -175,10 +122,6 @@ class Elements extends Component {
     const activeElements = [ ...this.state.activeElements ];
     this.setState({
       activeElements,
-      activeCounts: {
-        ...this.state.activeCounts,
-        [type]: this.state.activeCounts[type] - 1
-      },
       activeElementsMap: {
         ...this.state.activeElementsMap,
         [type]: {
@@ -205,7 +148,7 @@ class Elements extends Component {
       });
 
     initialData.categories = [
-      ...this.state.activeCategories.map(category => category.id)
+      ...this.props.activeCategories.map(category => category.id)
     ];
 
     const finalData = Object.keys(initialData).reduce((memo, next) => {
@@ -274,7 +217,7 @@ class Elements extends Component {
     const categoriesTab = this.props.categoriesLoaing ? 'Loading...' :
       <Categories
         categories={this.props.categories}
-        activeCategoriesMap={this.state.activeCategoriesMap}
+        activeCategoriesMap={this.props.activeCategoriesMap}
         toggleActiveCategory={this.toggleActiveCategory}
       />
     const videos = this.state.videos.length || this.state.youtubeVideos.length ?
@@ -297,7 +240,7 @@ class Elements extends Component {
       <div className="elements-container">
         <ActiveElements
           elements={this.state.activeElements}
-          categories={this.state.activeCategories}
+          categories={this.props.activeCategories}
           removeActiveElement={this.removeActiveElement}
           removeActiveCategory={this.removeActiveCategory}
           actionButtonCallback={this.searchVideos}
@@ -347,4 +290,14 @@ class Elements extends Component {
   }
 }
 
-export default withRouter(Elements);
+const mapStateToProps = state => ({
+  activeCategories: state.elements.activeCategories,
+  activeCategoriesMap: state.elements.activeCategoriesMap,
+});
+
+const mapDispatchToProps = {
+  addActiveCategory,
+  removeActiveCategory
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Elements));

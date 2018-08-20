@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux';
-import rootReducer from './rootReducer';
+import root from './root';
+import elements from './elements';
 import user from './user';
 
 export default combineReducers({
-    rootReducer,
+    root,
+    elements,
     user
 });

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import queryString from 'query-string';
 import VideoListing from '../VideoListing/VideoListing';
 import VideosElements from '../VideosElements/VideosElements';
@@ -17,7 +18,6 @@ class Videos extends Component {
     };
   }
   componentWillMount() {
-    debugger;
     const { champions, items, runes, categories } = this.props;
     if (champions.length && items.length && runes.length && categories.length) {
       this.getVideos(this.props);
@@ -74,6 +74,8 @@ class Videos extends Component {
             }
             return memo;
           }, []).join(' ');
+      } else if (prop === 'categories') {
+        return parsedQuery[prop].split(',').map(id => props.categoriesMap[id]).join(' ');
       }
       return '';
     }).join(' ');
@@ -85,13 +87,14 @@ class Videos extends Component {
   }
 
   render() {
-    const categoriesMap = this.props.categories.reduce((memo, next) => {
-      return {
-      ...memo,
-      ...next[Object.keys(next)[0]]
-        .reduce((memo, next) => ({ ...memo, [next.id]: next }), {}),
-      }
-    }, {});
+    // const categoriesMap = this.props.categories.reduce((memo, next) => {
+    //   return {
+    //   ...memo,
+    //   ...next[Object.keys(next)[0]]
+    //     .reduce((memo, next) => ({ ...memo, [next.id]: next }), {}),
+    //   }
+    // }, {});
+    const { categoriesMap } = this.props;
     const createVideoList = videos =>
       <ul>
         {videos.map(video => {
@@ -138,4 +141,9 @@ class Videos extends Component {
 
 }
 
-export default Videos;
+const mapStateToProps = state => ({
+  categories: state.root.categories,
+  categoriesMap: state.root.categoriesMap
+});
+
+export default connect(mapStateToProps)(Videos);

@@ -21,6 +21,27 @@ const prepareChampionsData = (json) => {
     return Object.keys(json.data).map(key => json.data[key]);
 }
 
+const assembleCategoriesMap = (categories) => {
+    // For each object with given id take value of its only property which is an
+    // array and add to the resulting array
+    return categories.reduce((memo, next) => {
+        const key = Object.keys(next)[0];
+        const section = next[key].reduce((memo, next) =>
+            ({ ...memo, [next.id]: next.name }), {})
+        return { ...memo, ...section };
+    }, {});
+}
+
+// const assembleCategoriesMap = (categories) => {
+//     return categories.reduce((memo, next) => {
+//       return {
+//       ...memo,
+//       ...next[Object.keys(next)[0]]
+//         .reduce((memo, next) => ({ ...memo, [next.id]: next }), {}),
+//       }
+//     }, {});
+// }
+
 const prepareSRItemData = (data) => {
     return Object.keys(data).reduce(
       (memo, next) => {
@@ -79,6 +100,7 @@ export default function rootReducer(state = initialState, action) {
             return {
                 ...state,
                 categories: action.categories,
+                categoriesMap: assembleCategoriesMap(action.categories),
                 categoriesLoading: false
             }
     }
