@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import ActiveElements from '../ActiveElements/ActiveElements';
@@ -288,4 +287,4 @@ const mapDispatchToProps = {
   removeActiveCategory
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Elements));
+export default connect(mapStateToProps, mapDispatchToProps)(Elements);

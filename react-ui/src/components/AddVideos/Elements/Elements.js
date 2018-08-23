@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import classnames from 'classnames';
 import ActiveElements from '../../ActiveElements/ActiveElements';
 import Categories from '../../Categories/Categories';
@@ -9,6 +10,12 @@ import RunesFilter from '../../RunesFilter/RunesFilter';
 import RunesList from '../../RunesList/RunesList';
 import state from './state';
 import './styles.css'
+import {
+  addActiveElement,
+  removeActiveElement,
+  addActiveCategory,
+  removeActiveCategory
+} from '../../../actions/elements';
 
 const TOOLBAR_HEIGHT = 80;
 const LIMITS_ENABLED = false;
@@ -403,4 +410,18 @@ class Elements extends Component {
   }
 }
 
-export default Elements;
+const mapStateToProps = state => ({
+  activeElements: state.elements.activeElements,
+  activeElementsMap: state.elements.activeElementsMap,
+  activeCategories: state.elements.activeCategories,
+  activeCategoriesMap: state.elements.activeCategoriesMap
+});
+
+const mapDispatchToProps = {
+  addActiveElement,
+  removeActiveElement,
+  addActiveCategory,
+  removeActiveCategory
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Elements);
