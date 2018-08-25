@@ -17,6 +17,7 @@ export const FETCH_RUNES_ERROR = 'FETCH_RUNES_ERROR';
 export const FETCH_CATEGORIES_START = 'FETCH_CATEGORIES_START';
 export const FETCH_CATEGORIES_SUCCESS = 'FETCH_CATEGORIES_SUCCESS';
 export const FETCH_CATEGORIES_ERROR = 'FETCH_CATEGORIES_ERROR';
+export const ALL_ELEMENTS_LOADED = 'ALL_ELEMENTS_LOADED';
 
 const requestItems = () => ({
     type: FETCH_ITEMS_START
@@ -107,3 +108,7 @@ export const fetchCategories = () => dispatch => {
             err => dispatch(requestCategoriesError(err))
         )
 }
+
+export const allElementsLoaded = () => ({
+    type: ALL_ELEMENTS_LOADED
+});

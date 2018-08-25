@@ -12,7 +12,8 @@ import {
     FETCH_RUNES_ERROR,
     FETCH_CATEGORIES_START,
     FETCH_CATEGORIES_SUCCESS,
-    FETCH_CATEGORIES_ERROR
+    FETCH_CATEGORIES_ERROR,
+    ALL_ELEMENTS_LOADED
 } from '../actions/rootActions';
 
 const SRID = 11;
@@ -31,16 +32,6 @@ const assembleCategoriesMap = (categories) => {
         return { ...memo, ...section };
     }, {});
 }
-
-// const assembleCategoriesMap = (categories) => {
-//     return categories.reduce((memo, next) => {
-//       return {
-//       ...memo,
-//       ...next[Object.keys(next)[0]]
-//         .reduce((memo, next) => ({ ...memo, [next.id]: next }), {}),
-//       }
-//     }, {});
-// }
 
 const prepareSRItemData = (data) => {
     return Object.keys(data).reduce(
@@ -102,6 +93,11 @@ export default function rootReducer(state = initialState, action) {
                 categories: action.categories,
                 categoriesMap: assembleCategoriesMap(action.categories),
                 categoriesLoading: false
+            }
+        case ALL_ELEMENTS_LOADED:
+            return {
+                ...state,
+                allElementsLoaded: true
             }
     }
     return state;

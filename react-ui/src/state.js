@@ -10,4 +10,5 @@ export default {
   categories: [],
   categoriesMap: {},
   categoriesLoaing: true,
+  allElementsLoaded: false
 }

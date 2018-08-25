@@ -3,51 +3,27 @@ import { connect } from 'react-redux';
 import queryString from 'query-string';
 import VideoListing from '../VideoListing/VideoListing';
 import VideosElements from '../VideosElements/VideosElements';
+import { fetchVideos } from '../../actions/videos';
 import './styles.css';
 
-const API_KEY = 'AIzaSyDP8_FbyKEyuT_-fIa1l7LcUsJzW-rV5j0';
-
 class Videos extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      videos: [],
-      youtubeVideos: [],
-      videosLoading: true,
-      youtubeVideosLoading: true
-    };
-  }
-  componentWillMount() {
-    const { champions, items, runes, categories } = this.props;
-    if (champions.length && items.length && runes.length && categories.length) {
-      this.getVideos(this.props);
+  componentDidMount() {
+    if (this.props.allElementsLoaded) {
+      this.getVideos();
     }
   }
-  componentWillReceiveProps(newProps) {
-    if (!(newProps.champions.length && newProps.items.length
-        && newProps.runes.length && newProps.categories.length)) {
-      return;
+  componentDidUpdate(prevProps) {
+    if (!prevProps.allElementsLoaded && this.props.allElementsLoaded) {
+      this.getVideos();
     }
-    this.getVideos(newProps);
   }
   getVideos(props) {
-    const ytQuery = `League of Legends ${this.createYTSearchQuery(props)}`;
-    fetch('/api/videos?' +
-      this.props.location.search.slice(1)).then(res => res.json())
-      .then(json => {
-        this.handleLSSearchResults(json)
-        fetch('https://www.googleapis.com/youtube/v3/search?' +
-          queryString.stringify({'maxResults': '25',
-           'part': 'snippet',
-           'q': ytQuery,
-           'type': 'video',
-           'key': API_KEY,
-        })).then(res => res.json()).then(videos => {
-          this.setState({ youtubeVideos: videos.items, youtubeVideosLoading: false });
-        }).catch(err => err);
-      }).catch(err => err);
+    const query = '/api/videos?' + this.props.location.search.slice(1);
+    const ytQuery = `League of Legends ${this.createYTSearchQuery()}`;
+    this.props.fetchVideos(query, ytQuery);
   }
-  createYTSearchQuery(props) {
+  createYTSearchQuery() {
+    const props = this.props;
     const parsedQuery = queryString.parse(props.location.search);
     return Object.keys(parsedQuery).map(prop => {
       if (prop === 'champions') {
@@ -81,19 +57,9 @@ class Videos extends Component {
     }).join(' ');
   }
   handleLSSearchResults(json) {
-    if (json.result) {
-      this.setState({ videos: json.result, videosLoading: false });
-    }
   }
 
   render() {
-    // const categoriesMap = this.props.categories.reduce((memo, next) => {
-    //   return {
-    //   ...memo,
-    //   ...next[Object.keys(next)[0]]
-    //     .reduce((memo, next) => ({ ...memo, [next.id]: next }), {}),
-    //   }
-    // }, {});
     const { categoriesMap } = this.props;
     const createVideoList = videos =>
       <ul>
@@ -113,10 +79,10 @@ class Videos extends Component {
           );
         })}
       </ul>;
-      const videos = this.state.videos.length ? createVideoList(this.state.videos) :
+      const videos = this.props.videos.length ? createVideoList(this.props.videos) :
         'No videos found';
-      const youtubeVideos = this.state.youtubeVideos.length ?
-        createVideoList(this.state.youtubeVideos) : 'No vidieos found';
+      const youtubeVideos = this.props.youtubeVideos.length ?
+        createVideoList(this.props.youtubeVideos) : 'No vidieos found';
 
     return (
       <div className="video-results-container">
@@ -128,11 +94,11 @@ class Videos extends Component {
         <div  className="video-results">
           <div className="video-results-set">
             <h2>LoL Strats Results</h2>
-            {this.state.videosLoading ? 'Loading...' : videos}
+            {this.props.videosLoading ? 'Loading...' : videos}
           </div>
           <div className="video-results-set">
             <h2>YouTube Results</h2>
-            {this.state.youtubeVideosLoading ? 'Loading...' : youtubeVideos}
+            {this.props.youtubeVideosLoading ? 'Loading...' : youtubeVideos}
           </div>
         </div>
       </div>
@@ -142,8 +108,17 @@ class Videos extends Component {
 }
 
 const mapStateToProps = state => ({
+  allElementsLoaded: state.root.allElementsLoaded,
   categories: state.root.categories,
-  categoriesMap: state.root.categoriesMap
+  categoriesMap: state.root.categoriesMap,
+  videos: state.videos.videos,
+  youtubeVideos: state.videos.youtubeVideos,
+  videosLoading: state.videos.videosLoading,
+  youtubeVideosLoading: state.videos.youtubeVideosLoading
 });
 
-export default connect(mapStateToProps)(Videos);
+const mapDispatchToProps = {
+  fetchVideos
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Videos);

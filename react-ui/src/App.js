@@ -14,7 +14,7 @@ import AddVideos from './components/AddVideos/Elements/Elements';
 import ListVideos from './components/Videos/Videos';
 import VideoPlayer from './components/VideoPlayer/VideoPlayer';
 import { fetchUser, setUserData } from './actions/user';
-import { fetchItems, fetchChampions, fetchRunes, fetchCategories } from './actions/rootActions';
+import { fetchItems, fetchChampions, fetchRunes, fetchCategories, allElementsLoaded } from './actions/rootActions';
 import Modal from './components/Modal/Modal';
 import StaticModal from './components/StaticModal/StaticModal';
 
@@ -39,10 +39,14 @@ class App extends Component {
   }
   componentWillMount() {
     this.props.fetchUser();
-    this.props.fetchItems();
-    this.props.fetchChampions();
-    this.props.fetchRunes();
-    this.props.fetchCategories();
+    Promise.all([
+      this.props.fetchItems(),
+      this.props.fetchChampions(),
+      this.props.fetchRunes(),
+      this.props.fetchCategories(),
+    ]).then((...args) => {
+      this.props.allElementsLoaded()
+    })
   }
   showModal(modalMessage) {
     this.setState({ modalMessage });
@@ -139,6 +143,7 @@ const mapDispacthToProps = {
   fetchChampions,
   fetchRunes,
   fetchCategories,
+  allElementsLoaded,
   setUserData
 };
 
