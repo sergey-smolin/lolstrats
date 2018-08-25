@@ -9,7 +9,6 @@ import ItemList from '../ItemList/ItemList';
 import RunesFilter from '../RunesFilter/RunesFilter';
 import RunesList from '../RunesList/RunesList';
 import Videos from '../Videos/Videos';
-import VideoPlayer from '../VideoPlayer/VideoPlayer';
 import state from './state';
 import './styles.css';
 import {
@@ -169,14 +168,9 @@ class Elements extends Component {
   render() {
     const itemsTab = this.props.itemsLoading ? 'Loading...' :
       <div className="items-selector-container">
-        <ItemFilter
-          updateTagMap={this.updateTagMap}
-          tree={this.props.tree}
-          tagMap={this.state.tagMap}
-        />
+        <ItemFilter tree={this.props.tree} />
         <ItemList
           items={this.state.filteredItems}
-          activeTags={this.state.activeTags}
           addActiveElement={this.addActiveElement}
         />
       </div>
@@ -209,11 +203,6 @@ class Elements extends Component {
         videos={this.state.videos}
         youtubeVideos={this.state.youtubeVideos}
         closeVideoResults={this.closeVideoResults}
-      /> : null;
-    const playVideo = this.state.playVideo.id ?
-      <VideoPlayer
-        id={this.state.playVideo.id}
-        data={this.state.playVideo.data}
       /> : null;
     const elementsFilter = [0, 1].includes(this.state.activeTabIndex) ?
       <input className="elements-filter" type="text" value={this.state.elementsFilter}

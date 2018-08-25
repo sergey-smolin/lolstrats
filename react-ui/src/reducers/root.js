@@ -62,6 +62,13 @@ export default function rootReducer(state = initialState, action) {
                 ...state,
                 itemsLoading: true
             }
+        case FETCH_ITEMS_SUCCESS:
+            return {
+                ...state,
+                items: prepareSRItemData(action.items),
+                tree: action.tree,
+                itemsLoading: false
+            }
         case FETCH_CHAMPIONS_START:
             return {
                 ...state,
@@ -76,13 +83,6 @@ export default function rootReducer(state = initialState, action) {
             return {
                 ...state,
                 categoriesLoading: true
-            }
-        case FETCH_ITEMS_SUCCESS:
-            return {
-                ...state,
-                items: prepareSRItemData(action.items),
-                tree: action.tree,
-                itemsLoading: false
             }
         case FETCH_CHAMPIONS_SUCCESS:
             return {
