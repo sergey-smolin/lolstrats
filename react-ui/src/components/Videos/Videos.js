@@ -7,6 +7,12 @@ import { fetchVideos } from '../../actions/videos';
 import './styles.css';
 
 class Videos extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      parsedQuery: queryString.parse(props.location.search)
+    }
+  }
   componentDidMount() {
     if (this.props.allElementsLoaded) {
       this.getVideos();
@@ -17,46 +23,39 @@ class Videos extends Component {
       this.getVideos();
     }
   }
-  getVideos(props) {
+  getVideos() {
     const query = '/api/videos?' + this.props.location.search.slice(1);
     const ytQuery = `League of Legends ${this.createYTSearchQuery()}`;
     this.props.fetchVideos(query, ytQuery);
   }
-  createYTSearchQuery() {
-    const props = this.props;
-    const parsedQuery = queryString.parse(props.location.search);
-    return Object.keys(parsedQuery).map(prop => {
-      if (prop === 'champions') {
-        return props.champions
-          .reduce((memo, next) => {
-            if (parsedQuery[prop].split(',').includes(next.key)) {
-              return [ ...memo, next.name ];
-            }
-            return memo;
-          }, []).join(' ');
-      } else if (prop === 'items') {
-        return props.items
-          .reduce((memo, next) => {
-            if (parsedQuery[prop].split(',').includes(next.id.toString())) {
-              return [ ...memo, next.name ];
-            }
-            return memo;
-          }, []).join(' ');
-      } else if (prop === 'runes') {
-        return props.runes
-          .reduce((memo, next) => {
-            if (parsedQuery[prop].split(',').includes(next.id.toString())) {
-              return [ ...memo, next.name ];
-            }
-            return memo;
-          }, []).join(' ');
-      } else if (prop === 'categories') {
-        return parsedQuery[prop].split(',').map(id => props.categoriesMap[id]).join(' ');
-      }
-      return '';
-    }).join(' ');
+  combineItemsRunes(type) {
+    return this.props[type]
+      .reduce((memo, next) => {
+        if (this.state.parsedQuery[type].split(',').includes(next.id.toString())) {
+          return [ ...memo, next.name ];
+        }
+        return memo;
+      }, []).join(' ');
   }
-  handleLSSearchResults(json) {
+  combineChampions() {
+    return this.props.champions
+      .reduce((memo, next) => {
+        if (this.state.parsedQuery.champions.split(',').includes(next.key)) {
+          return [ ...memo, next.name ];
+        }
+        return memo;
+      }, []).join(' ');
+  }
+  createYTSearchQuery() {
+    return Object.keys(this.state.parsedQuery).map(prop => {
+      if (prop === 'champions') {
+        return this.combineChampions();
+      } else if (prop === 'categories') {
+        return this.state.parsedQuery[prop].split(',').map(id => this.props.categoriesMap[id]).join(' ');
+      } else {
+        return this.combineItemsRunes(prop)
+      }
+    }).join(' ');
   }
 
   render() {
@@ -89,7 +88,7 @@ class Videos extends Component {
         <VideosElements
           champions={this.props.champions}
           categoriesMap={categoriesMap}
-          parsedQuery={queryString.parse(this.props.location.search)}
+          parsedQuery={this.state.parsedQuery}
         />
         <div  className="video-results">
           <div className="video-results-set">
