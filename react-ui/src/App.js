@@ -44,7 +44,7 @@ class App extends Component {
       this.props.fetchChampions(),
       this.props.fetchRunes(),
       this.props.fetchCategories(),
-    ]).then((...args) => {
+    ]).then(() => {
       this.props.allElementsLoaded()
     })
   }

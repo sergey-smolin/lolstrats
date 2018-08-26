@@ -16,12 +16,11 @@ import {
   addActiveCategory,
   removeActiveCategory
 } from '../../../actions/elements';
+import { addVideo } from '../../../actions/videos';
 
 const TOOLBAR_HEIGHT = 80;
-const LIMITS_ENABLED = false;
 const INCOMPLETE_SUBMISSION = 'To submit a video you need to select: \n1) a Champion \n2) a combination of runes and items';
 const SUBMITTING_A_VIDEO = 'The video is being submitted...';
-const API_OPERATION_SUCCESS = 'success';
 
 class Elements extends Component {
   constructor(props) {
@@ -44,16 +43,19 @@ class Elements extends Component {
     this.handleScroll = this.handleScroll.bind(this);
     this.filterElements = this.filterElements.bind(this);
   }
-  componentWillMount() {
-    if (this.props.user === null) {
+  componentDidMount() {
+    if (this.props.userLoaded && this.props.user === null) {
       this.props.history.replace('/login?redirect=add')
     }
-  }
-  componentDidMount() {
     window.addEventListener('scroll', this.handleScroll);
   }
   componentWillUnmount() {
     window.removeEventListener('scroll', this.handleScroll);
+  }
+  componentDidUpdate() {
+    if (this.props.userLoaded && this.props.user === null) {
+      this.props.history.replace('/login?redirect=add')
+    }
   }
   componentWillReceiveProps(newProps) {
     if (newProps.champions.length && !this.state.filteredChampions.length) {
@@ -70,7 +72,7 @@ class Elements extends Component {
       this.props.history.replace('/login?redirect=add')
     }
   }
-  handleScroll(event) {
+  handleScroll() {
     const { scrollTop } = document.documentElement;
     if (scrollTop > TOOLBAR_HEIGHT && !this.state.fixedPosition) {
       this.setState({ fixedPosition: true });
@@ -108,97 +110,18 @@ class Elements extends Component {
     }
   }
   addActiveCategory(category) {
-    if (this.state.activeCategoriesMap[category.id]) return;
-    if (LIMITS_ENABLED) {
-      if (!this.checkLimits('categories')) {
-        this.setState({ limitOverflow: true, limitOverflowMessage: 1 });
-        return;
-      }
-    }
-    const activeCategories = [ ...this.state.activeCategories, category ];
-    this.setState({
-      activeCategories,
-      activeCounts: {
-        ...this.state.activeCounts,
-        categories: this.state.activeCounts.categories + 1
-      },
-      activeCategoriesMap: {
-        ...this.state.activeCategoriesMap,
-        [category.name]: true
-      }
-    });
+    if (this.props.activeCategoriesMap[category.id]) return;
+    this.props.addActiveCategory(category);
   }
   removeActiveCategory(index) {
-    const { name } = this.state.activeCategories.splice(index, 1)[0];
-    const activeCategories = [ ...this.state.activeCategories ];
-    this.setState({
-      activeCategories,
-      activeCounts: {
-        ...this.state.activeCounts,
-        categories: this.state.activeCounts.categories - 1
-      },
-      activeCategoriesMap: {
-        ...this.state.activeCategoriesMap,
-        [name]: false
-      }
-    });
+    this.props.removeActiveCategory(index);
   }
   addActiveElement(element, type) {
-    if (this.state.activeElementsMap[type][element.id]) return;
-    if (LIMITS_ENABLED) {
-      if (!this.checkLimits(type)) {
-        this.setState({ limitOverflow: true, limitOverflowMessage: 1 });
-        return;
-      }
-    }
-    const activeElements = [ ...this.state.activeElements, { type, data: element } ];
-    this.setState({
-      activeElements,
-      activeCounts: {
-        ...this.state.activeCounts,
-        [type]: this.state.activeCounts[type] + 1
-      },
-      activeElementsMap: {
-        ...this.state.activeElementsMap,
-        [type]: {
-          ...this.state.activeElementsMap[type],
-          [element.id]: true
-        }
-      }
-    });
+    if (this.props.activeElementsMap[type][element.id]) return;
+    this.props.addActiveElement(element, type);
   }
   removeActiveElement(index) {
-    const { type, data } = this.state.activeElements.splice(index, 1)[0];
-    const activeElements = [ ...this.state.activeElements ];
-    this.setState({
-      activeElements,
-      activeCounts: {
-        ...this.state.activeCounts,
-        [type]: this.state.activeCounts[type] - 1
-      },
-      activeElementsMap: {
-        ...this.state.activeElementsMap,
-        [type]: {
-          ...this.state.activeElementsMap[type],
-          [data.id]: false
-        }
-      }
-    });
-  }
-  checkLimits(type) {
-    switch(type) {
-      case 'champions':
-        if (this.state.activeCounts.champions === 1) return false;
-        break;
-      case 'items':
-        if (this.state.activeCounts.items === 3) return false;
-        break;
-      case 'runes':
-        if (this.state.activeCounts.runes === 3) return false;
-        break;
-      default:
-        return true;
-    }
+    this.props.removeActiveElement(index)
   }
   updateVideoURL(event) {
     const { value } = event.target;
@@ -212,7 +135,7 @@ class Elements extends Component {
       return;
     };
     const elementsNamesIds = [];
-    const elements = this.state.activeElements.reduce((memo, next) => {
+    const elements = this.props.activeElements.reduce((memo, next) => {
       if (next.type === 'champions') {
         memo.champions.push(String(next.data.key));
       } else {
@@ -231,7 +154,7 @@ class Elements extends Component {
     });
 
     elements.categories = [
-      ...this.state.activeCategories.map(category => category.id)
+      ...this.props.activeCategories.map(category => category.id)
     ];
 
     if (!elements.champions.length ||
@@ -241,34 +164,12 @@ class Elements extends Component {
       }
     const body = { ...elements, elementsNamesIds, id: videoId };
     this.props.showStaticModal(SUBMITTING_A_VIDEO);
-    fetch('/api/videos/add', {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      credentials: 'include',
-      body: JSON.stringify(body)
-    }).then(res => res.json())
-    .then(json => {
-      this.props.hideStaticModal(SUBMITTING_A_VIDEO);
-      if (json.result === API_OPERATION_SUCCESS) {
-        this.setState({
-          activeElements: [],
-          activeElementsMap: {
-            champions: {},
-            items: {},
-            runes: {}
-          },
-          activeCategories: [],
-          activeCategoriesMap: {},
-          videoURL: ''
-        })
-      }
+    this.props.addVideo(body).then(json => {
+      this.props.hideStaticModal();
       this.props.showModal(json.message);
     })
-    .catch(err => err);
   }
-  getVideoId(url) {
+  getVideoId() {
     const result = /^(https?:\/\/)?(www\.youtube\.com\/watch\?(.*&)?v=([^&]+))|(youtu.be\/([^&]+))/g
       .exec(this.state.videoURL);
     if (!result) return false;
@@ -297,13 +198,10 @@ class Elements extends Component {
     const itemsTab = this.props.itemsLoading ? 'Loading...' :
       <div className="items-selector-container">
         <ItemFilter
-          updateTagMap={this.updateTagMap}
           tree={this.props.tree}
-          tagMap={this.state.tagMap}
         />
         <ItemList
           items={this.state.filteredItems}
-          activeTags={this.state.activeTags}
           addActiveElement={this.addActiveElement}
         />
       </div>
@@ -359,8 +257,8 @@ class Elements extends Component {
               }
             </div>
             <ActiveElements
-              categories={this.state.activeCategories}
-              elements={this.state.activeElements}
+              categories={this.props.activeCategories}
+              elements={this.props.activeElements}
               removeActiveElement={this.removeActiveElement}
               removeActiveCategory={this.removeActiveCategory}
               searchCriteriaText="Click on icons below to specify a build"
@@ -421,7 +319,8 @@ const mapDispatchToProps = {
   addActiveElement,
   removeActiveElement,
   addActiveCategory,
-  removeActiveCategory
+  removeActiveCategory,
+  addVideo
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Elements);

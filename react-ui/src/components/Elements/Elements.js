@@ -62,7 +62,7 @@ class Elements extends Component {
       })
     }
   }
-  handleScroll(event) {
+  handleScroll() {
     const { scrollTop } = document.documentElement;
     if (scrollTop > TOOLBAR_HEIGHT && !this.state.fixedPosition) {
       this.setState({ fixedPosition: true });

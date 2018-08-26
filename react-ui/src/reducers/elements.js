@@ -1,4 +1,10 @@
-import { ADD_ACTIVE_CATEGORY, REMOVE_ACTIVE_CATEGORY, ADD_ACTIVE_ELEMENT, REMOVE_ACTIVE_ELEMENT } from '../actions/elements';
+import {
+  ADD_ACTIVE_CATEGORY,
+  REMOVE_ACTIVE_CATEGORY,
+  ADD_ACTIVE_ELEMENT,
+  REMOVE_ACTIVE_ELEMENT,
+  RESET_ACTIVE_ENTITIES
+} from '../actions/elements';
 
 const initialState = {
     activeCategories: [],
@@ -65,6 +71,18 @@ export default function elementsReducer(state = initialState, action) {
                 }
             };
         }
+    case RESET_ACTIVE_ENTITIES:
+      return {
+        ...state,
+        activeElements: [],
+        activeElementsMap: {
+          champions: {},
+          items: {},
+          runes: {}
+        },
+        activeCategories: [],
+        activeCategoriesMap: {}
+      }
     }
     return state;
 }

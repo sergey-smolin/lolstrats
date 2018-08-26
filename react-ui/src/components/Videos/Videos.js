@@ -24,7 +24,7 @@ class Videos extends Component {
     }
   }
   getVideos() {
-    const query = '/api/videos?' + this.props.location.search.slice(1);
+    const query = this.props.location.search.slice(1);
     const ytQuery = `League of Legends ${this.createYTSearchQuery()}`;
     this.props.fetchVideos(query, ytQuery);
   }

@@ -20,7 +20,7 @@ class Login extends Component {
     this.handleInputChange = this.handleInputChange.bind(this);
   }
 
-  componentWillReceiveProps(newProps) {
+  componentDidUpdate(newProps) {
     if (newProps.user) {
       this.redirect();
     }

@@ -2,6 +2,7 @@ import { FETCH_USER_START, FETCH_USER_SUCCESS, SET_USER_DATA } from '../actions/
 
 const initialState = {
     userLoading: false,
+    userLoaded: false,
     user: null
 };
 
@@ -16,6 +17,7 @@ export default function userReducer(state = initialState, action) {
             return {
                 ...state,
                 user: action.user,
+                userLoaded: true,
                 userLoading: false
             }
         case SET_USER_DATA:
