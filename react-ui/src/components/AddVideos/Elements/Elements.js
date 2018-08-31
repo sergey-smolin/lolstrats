@@ -8,7 +8,6 @@ import ItemFilter from '../../ItemFilter/ItemFilter';
 import ItemList from '../../ItemList/ItemList';
 import RunesFilter from '../../RunesFilter/RunesFilter';
 import RunesList from '../../RunesList/RunesList';
-import state from './state';
 import './styles.css'
 import {
   addActiveElement,
@@ -26,12 +25,14 @@ class Elements extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      ...state,
       fixedPosition: false,
+      elementsFilter: '',
+      activeTabIndex: 0,
       filteredChampions: this.props.champions,
-      filteredItems: this.props.items
+      filteredItems: this.props.items,
+      runesPath: 'Precision',
+      urlError: false
     };
-    this.updateTagMap = this.updateTagMap.bind(this);
     this.updateRunesPath = this.updateRunesPath.bind(this);
     this.toggleActiveCategory = this.toggleActiveCategory.bind(this);
     this.addActiveCategory = this.addActiveCategory.bind(this);
@@ -57,7 +58,7 @@ class Elements extends Component {
       this.props.history.replace('/login?redirect=add')
     }
   }
-  componentWillReceiveProps(newProps) {
+  componentDidUpdate(newProps) {
     if (newProps.champions.length && !this.state.filteredChampions.length) {
       this.setState({
         filteredChampions: newProps.champions
@@ -80,9 +81,6 @@ class Elements extends Component {
       this.setState({ fixedPosition: false });
     }
   }
-  updateTagMap(update) {
-    this.setState(update);
-  }
   updateRunesPath(update) {
     this.setState({ runesPath: update });
   }
@@ -95,9 +93,9 @@ class Elements extends Component {
    });
   }
   toggleActiveCategory(category) {
-    if (this.state.activeCategoriesMap[category.name]) {
+    if (this.props.activeCategoriesMap[category.name]) {
       let index;
-      this.state.activeCategories.find((cat, idx) => {
+      this.props.activeCategories.find((cat, idx) => {
         if (cat.name === category.name) {
           index = idx;
           return true;
@@ -225,7 +223,7 @@ class Elements extends Component {
     const categoriesTab = this.props.categoriesLoaing ? 'Loading...' :
       <Categories
         categories={this.props.categories}
-        activeCategoriesMap={this.state.activeCategoriesMap}
+        activeCategoriesMap={this.props.activeCategoriesMap}
         toggleActiveCategory={this.toggleActiveCategory}
       />
     const elementsFilter = [0, 1].includes(this.state.activeTabIndex) ?

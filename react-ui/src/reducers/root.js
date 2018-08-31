@@ -1,12 +1,6 @@
 import initialState from '../state';
 import {
     FETCH_USER_ERROR,
-    FETCH_ITEMS_START,
-    FETCH_ITEMS_SUCCESS,
-    FETCH_ITEMS_ERROR,
-    FETCH_CHAMPIONS_START,
-    FETCH_CHAMPIONS_SUCCESS,
-    FETCH_CHAMPIONS_ERROR,
     FETCH_RUNES_START,
     FETCH_RUNES_SUCCESS,
     FETCH_RUNES_ERROR,
@@ -15,12 +9,6 @@ import {
     FETCH_CATEGORIES_ERROR,
     ALL_ELEMENTS_LOADED
 } from '../actions/rootActions';
-
-const SRID = 11;
-
-const prepareChampionsData = (json) => {
-    return Object.keys(json.data).map(key => json.data[key]);
-}
 
 const assembleCategoriesMap = (categories) => {
     // For each object with given id take value of its only property which is an
@@ -33,38 +21,8 @@ const assembleCategoriesMap = (categories) => {
     }, {});
 }
 
-const prepareSRItemData = (data) => {
-    return Object.keys(data).reduce(
-      (memo, next) => {
-        const item = data[next];
-        if (item.maps[SRID]) {
-          item.description = `<description>${item.description}</description>`;
-          return [ ...memo, item ];
-        }
-        return memo;
-      },
-    []);
-}
-
 export default function rootReducer(state = initialState, action) {
     switch (action.type) {
-        case FETCH_ITEMS_START:
-            return {
-                ...state,
-                itemsLoading: true
-            }
-        case FETCH_ITEMS_SUCCESS:
-            return {
-                ...state,
-                items: prepareSRItemData(action.items),
-                tree: action.tree,
-                itemsLoading: false
-            }
-        case FETCH_CHAMPIONS_START:
-            return {
-                ...state,
-                championsLoading: true
-            }
         case FETCH_RUNES_START:
             return {
                 ...state,
@@ -74,12 +32,6 @@ export default function rootReducer(state = initialState, action) {
             return {
                 ...state,
                 categoriesLoading: true
-            }
-        case FETCH_CHAMPIONS_SUCCESS:
-            return {
-                ...state,
-                champions: prepareChampionsData(action.champions),
-                championsLoading: false
             }
         case FETCH_RUNES_SUCCESS:
             return {

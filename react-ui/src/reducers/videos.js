@@ -11,7 +11,8 @@ const initialState = {
   videos: [],
   videosLoading: false,
   youtubeVideos: [],
-  youtubeVideosLoading: false
+  youtubeVideosLoading: false,
+  videoURL: '',
 };
 
 export default function videosReducer(state = initialState, action) {

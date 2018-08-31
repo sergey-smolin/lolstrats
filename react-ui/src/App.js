@@ -14,7 +14,9 @@ import AddVideos from './components/AddVideos/Elements/Elements';
 import ListVideos from './components/Videos/Videos';
 import VideoPlayer from './components/VideoPlayer/VideoPlayer';
 import { fetchUser, setUserData } from './actions/user';
-import { fetchItems, fetchChampions, fetchRunes, fetchCategories, allElementsLoaded } from './actions/rootActions';
+import { fetchChampions } from './actions/champions';
+import { fetchItems } from './actions/items';
+import { fetchRunes, fetchCategories, allElementsLoaded } from './actions/rootActions';
 import Modal from './components/Modal/Modal';
 import StaticModal from './components/StaticModal/StaticModal';
 
@@ -125,15 +127,15 @@ class App extends Component {
 }
 
 const mapStateToProps = state => ({
-  items: state.root.items,
-  itemsLoading: state.root.itemsLoading,
-  champions: state.root.champions,
-  championsLoading: state.root.championsLoading,
+  items: state.items.items,
+  itemsLoading: state.items.itemsLoading,
+  champions: state.champions.champions,
+  championsLoading: state.champions.championsLoading,
   runes: state.root.runes,
   runesLoading: state.root.runesLoading,
   categories: state.root.categories,
   categoriesLoading: state.root.categoriesLoading,
-  tree: state.root.tree,
+  tree: state.items.tree,
   user: state.user.user
 });
 
