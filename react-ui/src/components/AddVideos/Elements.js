@@ -166,42 +166,7 @@ class AddVideosElements extends Elements {
               actionButtonText="Add"
             />
           </div>
-          <div className={classnames({
-            'tabs-container': true,
-            'tabs-container-add-video-top-margin': this.state.fixedPosition
-          })}>
-            <div className="tabs-controls">
-              <ul className="tabs">
-                <li className="tab" onClick={() => this.setActiveTab(0)}>
-                  Champions
-                </li>
-                <li className="tab" onClick={() => this.setActiveTab(1)}>
-                  Items
-                </li>
-                <li className="tab" onClick={() => this.setActiveTab(2)}>
-                  Runes
-                </li>
-                <li className="tab" onClick={() => this.setActiveTab(3)}>
-                  Categories
-                </li>
-              </ul>
-              {elementsFilter}
-            </div>
-            <ul className="tabContent">
-              <div className={classnames({ 'tab-page': true, active: this.state.activeTabIndex === 0 })}>
-                {championsTab}
-              </div>
-              <div className={classnames({ 'tab-page': true, active: this.state.activeTabIndex === 1 })} >
-                {itemsTab}
-              </div>
-              <div className={classnames({ 'tab-page': true, active: this.state.activeTabIndex === 2 })} >
-                {runesTab}
-              </div>
-              <div className={classnames({ 'tab-page': true, active: this.state.activeTabIndex === 3 })} >
-                {categoriesTab}
-              </div>
-            </ul>
-          </div>
+          {this.renderTabs('tabs-container-add-video-top-margin')}
         </form>
       </div>
     );

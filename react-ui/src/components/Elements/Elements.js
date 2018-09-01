@@ -1,22 +1,11 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import classnames from 'classnames';
-import ActiveElements from '../ActiveElements/ActiveElements';
 import Categories from '../Categories/Categories';
 import ChampionList from '../ChampionList/ChampionList';
 import ItemFilter from '../ItemFilter/ItemFilter';
 import ItemList from '../ItemList/ItemList';
 import RunesFilter from '../RunesFilter/RunesFilter';
 import RunesList from '../RunesList/RunesList';
-import { filterChampions } from '../../actions/champions';
-import { filterItems } from '../../actions/items';
-import {
-  addActiveElement,
-  removeActiveElement,
-  addActiveCategory,
-  removeActiveCategory,
-  setElementsFilter
-} from '../../actions/elements';
 import './styles.css'
 
 const TOOLBAR_HEIGHT = 80;
@@ -103,7 +92,7 @@ class Elements extends Component {
       default:
     }
   }
-  render() {
+  renderTabs(marginClassName) {
     const itemsTab = this.props.itemsLoading ? 'Loading...' :
       <div className="items-selector-container">
         <ItemFilter tree={this.props.tree} />
@@ -135,101 +124,44 @@ class Elements extends Component {
     const elementsFilter = [0, 1].includes(this.state.activeTabIndex) ?
       <input className="elements-filter" type="text" value={this.props.elementsFilter}
         onChange={this.filterElements} placeholder="Filter..."/> : null;
-
-    return (
-      <div className="elements-container">
-        <form>
-          <div className={classnames({
-            'add-video-controls': true,
-            'add-video-controls-fixed-position': this.state.fixedPosition
-          })}>
-            <div className="video-url-input-container">
-              <label>
-                <input
-                  type="text"
-                  name="videoURL"
-                  value={this.state.videoURL}
-                  className={classnames({ 'input-error': this.state.urlError })}
-                  onChange={this.updateVideoURL}
-                />
-                Youtube Video URL
-              </label>
-              {
-                this.state.urlError && <div className="url-error">
-                  Please enter a valid YouTube video url!
-                </div>
-              }
-            </div>
-            <ActiveElements
-              categories={this.props.activeCategories}
-              elements={this.props.activeElements}
-              removeActiveElement={this.removeActiveElement}
-              removeActiveCategory={this.removeActiveCategory}
-              searchCriteriaText="Click on icons below to specify a build"
-              actionButtonCallback={this.addVideo}
-              actionButtonText="Add"
-            />
+    
+    return <div className={classnames({
+        'tabs-container': true,
+        'tabs-container-top-margin': this.state.fixedPosition
+      })}>
+        <div className="tabs-controls">
+          <ul className="tabs">
+            <li className="tab" onClick={() => this.setActiveTab(0)}>
+              Champions
+            </li>
+            <li className="tab" onClick={() => this.setActiveTab(1)}>
+              Items
+            </li>
+            <li className="tab" onClick={() => this.setActiveTab(2)}>
+              Runes
+            </li>
+            <li className="tab" onClick={() => this.setActiveTab(3)}>
+              Categories
+            </li>
+          </ul>
+          {elementsFilter}
+        </div>
+        <ul className="tabContent">
+          <div className={classnames({ 'tab-page': true, active: this.state.activeTabIndex === 0 })}>
+            {championsTab}
           </div>
-          <div className={classnames({
-            'tabs-container': true,
-            'tabs-container-add-video-top-margin': this.state.fixedPosition
-          })}>
-            <div className="tabs-controls">
-              <ul className="tabs">
-                <li className="tab" onClick={() => this.setActiveTab(0)}>
-                  Champions
-                </li>
-                <li className="tab" onClick={() => this.setActiveTab(1)}>
-                  Items
-                </li>
-                <li className="tab" onClick={() => this.setActiveTab(2)}>
-                  Runes
-                </li>
-                <li className="tab" onClick={() => this.setActiveTab(3)}>
-                  Categories
-                </li>
-              </ul>
-              {elementsFilter}
-            </div>
-            <ul className="tabContent">
-              <div className={classnames({ 'tab-page': true, active: this.state.activeTabIndex === 0 })}>
-                {championsTab}
-              </div>
-              <div className={classnames({ 'tab-page': true, active: this.state.activeTabIndex === 1 })} >
-                {itemsTab}
-              </div>
-              <div className={classnames({ 'tab-page': true, active: this.state.activeTabIndex === 2 })} >
-                {runesTab}
-              </div>
-              <div className={classnames({ 'tab-page': true, active: this.state.activeTabIndex === 3 })} >
-                {categoriesTab}
-              </div>
-            </ul>
+          <div className={classnames({ 'tab-page': true, active: this.state.activeTabIndex === 1 })}>
+            {itemsTab}
           </div>
-        </form>
+          <div className={classnames({ 'tab-page': true, active: this.state.activeTabIndex === 2 })}>
+            {runesTab}
+          </div>
+          <div className={classnames({ 'tab-page': true, active: this.state.activeTabIndex === 3 })}>
+            {categoriesTab}
+          </div>
+        </ul>
       </div>
-    );
   }
-}
-
-const mapStateToProps = state => ({
-  activeElements: state.elements.activeElements,
-  activeElementsMap: state.elements.activeElementsMap,
-  activeCategories: state.elements.activeCategories,
-  activeCategoriesMap: state.elements.activeCategoriesMap,
-  elementsFilter: state.elements.elementsFilter,
-  filteredChampions: state.champions.filteredChampions,
-  filteredItems: state.items.filteredChampions
-});
-
-const mapDispatchToProps = {
-  addActiveElement,
-  removeActiveElement,
-  addActiveCategory,
-  removeActiveCategory,
-  setElementsFilter,
-  filterChampions,
-  filterItems
 }
 
 export default Elements;
