@@ -2,13 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import ActiveElements from '../ActiveElements/ActiveElements';
-import ChampionList from '../ChampionList/ChampionList';
 import Categories from '../Categories/Categories';
+import ChampionList from '../ChampionList/ChampionList';
 import ItemFilter from '../ItemFilter/ItemFilter';
 import ItemList from '../ItemList/ItemList';
 import RunesFilter from '../RunesFilter/RunesFilter';
 import RunesList from '../RunesList/RunesList';
-import './styles.css';
 import { filterChampions } from '../../actions/champions';
 import { filterItems } from '../../actions/items';
 import {
@@ -18,9 +17,9 @@ import {
   removeActiveCategory,
   setElementsFilter
 } from '../../actions/elements';
+import './styles.css'
 
 const TOOLBAR_HEIGHT = 80;
-const esc = encodeURIComponent;
 
 class Elements extends Component {
   constructor(props) {
@@ -28,16 +27,14 @@ class Elements extends Component {
     this.state = {
       fixedPosition: false,
       activeTabIndex: 0,
-      runesPath: 'Precision',
+      runesPath: 'Precision'
     };
-    this.updateTagMap = this.updateTagMap.bind(this);
     this.updateRunesPath = this.updateRunesPath.bind(this);
     this.toggleActiveCategory = this.toggleActiveCategory.bind(this);
     this.addActiveCategory = this.addActiveCategory.bind(this);
     this.removeActiveCategory = this.removeActiveCategory.bind(this);
     this.addActiveElement = this.addActiveElement.bind(this);
     this.removeActiveElement = this.removeActiveElement.bind(this);
-    this.searchVideos = this.searchVideos.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
     this.filterElements = this.filterElements.bind(this);
   }
@@ -54,9 +51,6 @@ class Elements extends Component {
     } else if (scrollTop < TOOLBAR_HEIGHT && this.state.fixedPosition) {
       this.setState({ fixedPosition: false });
     }
-  }
-  updateTagMap(update) {
-    this.setState(update);
   }
   updateRunesPath(update) {
     this.setState({ runesPath: update });
@@ -95,39 +89,6 @@ class Elements extends Component {
   }
   removeActiveElement(index) {
     this.props.removeActiveElement(index)
-  }
-  createSearchQuery() {
-    const initialData = this.props.activeElements.reduce(
-      (memo, { type, data }) => {
-        if (type === 'champions') {
-          memo.champions.push(parseInt(data.key, 10));
-        } else {
-          memo[type].push(data.id);
-        }
-        return memo;
-      },
-      {
-          champions: [],
-          items: [],
-          runes: []
-      });
-
-    initialData.categories = [
-      ...this.props.activeCategories.map(category => category.id)
-    ];
-
-    const finalData = Object.keys(initialData).reduce((memo, next) => {
-      if (initialData[next].length === 0) return memo;
-      return { ...memo, [next]: initialData[next] };
-    }, {});
-
-    const result = Object.keys(finalData).map(key =>
-      `${key}=${esc(finalData[key].join(','))}`, '').join('&');
-
-    return result;
-  }
-  searchVideos() {
-    this.props.history.push('/videos/list?' + this.createSearchQuery());
   }
   filterElements(event) {
     const filter = event.target.value;
@@ -177,52 +138,75 @@ class Elements extends Component {
 
     return (
       <div className="elements-container">
-        <ActiveElements
-          elements={this.props.activeElements}
-          categories={this.props.activeCategories}
-          removeActiveElement={this.removeActiveElement}
-          removeActiveCategory={this.removeActiveCategory}
-          actionButtonCallback={this.searchVideos}
-          searchCriteriaText="Click on icons below to create a build to search"
-          actionButtonText="Search"
-          fixedPosition={this.state.fixedPosition}
-        />
-        <div className={classnames({
-          'tabs-container': true,
-          'tabs-container-top-margin': this.state.fixedPosition
-        })}>
-          <div className="tabs-controls">
-            <ul className="tabs">
-              <li className="tab" onClick={() => this.setActiveTab(0)}>
-                Champions
-              </li>
-              <li className="tab" onClick={() => this.setActiveTab(1)}>
-                Items
-              </li>
-              <li className="tab" onClick={() => this.setActiveTab(2)}>
-                Runes
-              </li>
-              <li className="tab" onClick={() => this.setActiveTab(3)}>
-                Categories
-              </li>
-            </ul>
-            {elementsFilter}
+        <form>
+          <div className={classnames({
+            'add-video-controls': true,
+            'add-video-controls-fixed-position': this.state.fixedPosition
+          })}>
+            <div className="video-url-input-container">
+              <label>
+                <input
+                  type="text"
+                  name="videoURL"
+                  value={this.state.videoURL}
+                  className={classnames({ 'input-error': this.state.urlError })}
+                  onChange={this.updateVideoURL}
+                />
+                Youtube Video URL
+              </label>
+              {
+                this.state.urlError && <div className="url-error">
+                  Please enter a valid YouTube video url!
+                </div>
+              }
+            </div>
+            <ActiveElements
+              categories={this.props.activeCategories}
+              elements={this.props.activeElements}
+              removeActiveElement={this.removeActiveElement}
+              removeActiveCategory={this.removeActiveCategory}
+              searchCriteriaText="Click on icons below to specify a build"
+              actionButtonCallback={this.addVideo}
+              actionButtonText="Add"
+            />
           </div>
-          <ul className="tabContent">
-            <div className={classnames({ 'tab-page': true, active: this.state.activeTabIndex === 0 })}>
-              {championsTab}
+          <div className={classnames({
+            'tabs-container': true,
+            'tabs-container-add-video-top-margin': this.state.fixedPosition
+          })}>
+            <div className="tabs-controls">
+              <ul className="tabs">
+                <li className="tab" onClick={() => this.setActiveTab(0)}>
+                  Champions
+                </li>
+                <li className="tab" onClick={() => this.setActiveTab(1)}>
+                  Items
+                </li>
+                <li className="tab" onClick={() => this.setActiveTab(2)}>
+                  Runes
+                </li>
+                <li className="tab" onClick={() => this.setActiveTab(3)}>
+                  Categories
+                </li>
+              </ul>
+              {elementsFilter}
             </div>
-            <div className={classnames({ 'tab-page': true, active: this.state.activeTabIndex === 1 })}>
-              {itemsTab}
-            </div>
-            <div className={classnames({ 'tab-page': true, active: this.state.activeTabIndex === 2 })}>
-              {runesTab}
-            </div>
-            <div className={classnames({ 'tab-page': true, active: this.state.activeTabIndex === 3 })}>
-              {categoriesTab}
-            </div>
-          </ul>
-        </div>
+            <ul className="tabContent">
+              <div className={classnames({ 'tab-page': true, active: this.state.activeTabIndex === 0 })}>
+                {championsTab}
+              </div>
+              <div className={classnames({ 'tab-page': true, active: this.state.activeTabIndex === 1 })} >
+                {itemsTab}
+              </div>
+              <div className={classnames({ 'tab-page': true, active: this.state.activeTabIndex === 2 })} >
+                {runesTab}
+              </div>
+              <div className={classnames({ 'tab-page': true, active: this.state.activeTabIndex === 3 })} >
+                {categoriesTab}
+              </div>
+            </ul>
+          </div>
+        </form>
       </div>
     );
   }
@@ -248,4 +232,4 @@ const mapDispatchToProps = {
   filterItems
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Elements);
+export default Elements;

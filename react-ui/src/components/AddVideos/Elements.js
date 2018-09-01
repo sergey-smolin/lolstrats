@@ -1,114 +1,52 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-import ActiveElements from '../../ActiveElements/ActiveElements';
-import Categories from '../../Categories/Categories';
-import ChampionList from '../../ChampionList/ChampionList';
-import ItemFilter from '../../ItemFilter/ItemFilter';
-import ItemList from '../../ItemList/ItemList';
-import RunesFilter from '../../RunesFilter/RunesFilter';
-import RunesList from '../../RunesList/RunesList';
-import { filterChampions } from '../../../actions/champions';
-import { filterItems } from '../../../actions/items';
+import Elements from '../Elements/Elements'
+import ActiveElements from '../ActiveElements/ActiveElements';
+import Categories from '../Categories/Categories';
+import ChampionList from '../ChampionList/ChampionList';
+import ItemFilter from '../ItemFilter/ItemFilter';
+import ItemList from '../ItemList/ItemList';
+import RunesFilter from '../RunesFilter/RunesFilter';
+import RunesList from '../RunesList/RunesList';
+import { filterChampions } from '../../actions/champions';
+import { filterItems } from '../../actions/items';
 import {
   addActiveElement,
   removeActiveElement,
   addActiveCategory,
   removeActiveCategory,
   setElementsFilter
-} from '../../../actions/elements';
-import { addVideo } from '../../../actions/videos';
+} from '../../actions/elements';
+import { addVideo } from '../../actions/videos';
 import './styles.css'
 
-const TOOLBAR_HEIGHT = 80;
 const INCOMPLETE_SUBMISSION = 'To submit a video you need to select: \n1) a Champion \n2) a combination of runes and items';
 const SUBMITTING_A_VIDEO = 'The video is being submitted...';
 
-class Elements extends Component {
+class AddVideosElements extends Elements {
   constructor(props) {
     super(props);
-    this.state = {
-      fixedPosition: false,
-      activeTabIndex: 0,
-      runesPath: 'Precision',
-      urlError: false
-    };
-    this.updateRunesPath = this.updateRunesPath.bind(this);
-    this.toggleActiveCategory = this.toggleActiveCategory.bind(this);
-    this.addActiveCategory = this.addActiveCategory.bind(this);
-    this.removeActiveCategory = this.removeActiveCategory.bind(this);
-    this.addActiveElement = this.addActiveElement.bind(this);
-    this.removeActiveElement = this.removeActiveElement.bind(this);
+    this.state.urlError = false;
     this.addVideo = this.addVideo.bind(this);
     this.updateVideoURL = this.updateVideoURL.bind(this);
-    this.handleScroll = this.handleScroll.bind(this);
-    this.filterElements = this.filterElements.bind(this);
   }
   componentDidMount() {
+    super.componentDidMount();
     if (this.props.userLoaded && this.props.user === null) {
       this.props.history.replace('/login?redirect=add')
     }
-    window.addEventListener('scroll', this.handleScroll);
-  }
-  componentWillUnmount() {
-    window.removeEventListener('scroll', this.handleScroll);
   }
   componentDidUpdate() {
     if (this.props.userLoaded && this.props.user === null) {
       this.props.history.replace('/login?redirect=add')
     }
   }
-  componentDidUpdate(newProps) {
-    if (this.props.user !== null && newProps.user === null) {
-      this.props.history.replace('/login?redirect=add')
-    }
-  }
-  handleScroll() {
-    const { scrollTop } = document.documentElement;
-    if (scrollTop > TOOLBAR_HEIGHT && !this.state.fixedPosition) {
-      this.setState({ fixedPosition: true });
-    } else if (scrollTop < TOOLBAR_HEIGHT && this.state.fixedPosition) {
-      this.setState({ fixedPosition: false });
-    }
-  }
-  updateRunesPath(update) {
-    this.setState({ runesPath: update });
-  }
-  setActiveTab(activeTabIndex) {
-    this.setState({ activeTabIndex });
-    this.props.filterChampions('');
-    this.props.filterItems('');
-    this.props.setElementsFilter('');
-  }
-  toggleActiveCategory(category) {
-    if (this.props.activeCategoriesMap[category.name]) {
-      let index;
-      this.props.activeCategories.find((cat, idx) => {
-        if (cat.name === category.name) {
-          index = idx;
-          return true;
-        }
-        return false;
-      })
-      this.removeActiveCategory(index);
-    } else {
-      this.addActiveCategory(category);
-    }
-  }
-  addActiveCategory(category) {
-    if (this.props.activeCategoriesMap[category.id]) return;
-    this.props.addActiveCategory(category);
-  }
-  removeActiveCategory(index) {
-    this.props.removeActiveCategory(index);
-  }
-  addActiveElement(element, type) {
-    if (this.props.activeElementsMap[type][element.id]) return;
-    this.props.addActiveElement(element, type);
-  }
-  removeActiveElement(index) {
-    this.props.removeActiveElement(index)
-  }
+  // componentDidUpdate(newProps) {
+  //   if (this.props.user !== null && newProps.user === null) {
+  //     this.props.history.replace('/login?redirect=add')
+  //   }
+  // }
   updateVideoURL(event) {
     const { value } = event.target;
     this.setState({ videoURL: value });
@@ -160,19 +98,6 @@ class Elements extends Component {
       .exec(this.state.videoURL);
     if (!result) return false;
     return result[4] || result[6];
-  }
-  filterElements(event) {
-    const filter = event.target.value;
-    this.props.setElementsFilter(filter);
-    switch(this.state.activeTabIndex) {
-      case 0:
-        this.props.filterChampions(filter)
-        break;
-      case 1:
-        this.props.filterItems(filter)
-        break;
-      default:
-    }
   }
   render() {
     const itemsTab = this.props.itemsLoading ? 'Loading...' :
@@ -304,4 +229,4 @@ const mapDispatchToProps = {
   filterItems
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Elements);
+export default connect(mapStateToProps, mapDispatchToProps)(AddVideosElements);
