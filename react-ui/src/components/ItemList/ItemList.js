@@ -31,7 +31,8 @@ class ItemList extends Component {
 }
 
 const mapStateToProps = state => ({
-  activeTags: state.items.activeTags
+  activeTags: state.items.activeTags,
+  items: state.items.filteredItems,
 })
 
 export default connect(mapStateToProps)(ItemList);

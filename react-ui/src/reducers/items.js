@@ -2,7 +2,8 @@ import {
   FETCH_ITEMS_START,
   FETCH_ITEMS_SUCCESS,
   FETCH_ITEMS_ERROR,
-  UPDATE_TAG_MAP
+  UPDATE_TAG_MAP,
+  FILTER_ITEMS
 } from '../actions/items';
 
 const SRID = 11;
@@ -35,13 +36,16 @@ export default function itemsReducer(state = initialState, action) {
             ...state,
             itemsLoading: true
         }
-    case FETCH_ITEMS_SUCCESS:
+    case FETCH_ITEMS_SUCCESS: {
+        const SRItemsData = prepareSRItemData(action.items);
         return {
             ...state,
-            items: prepareSRItemData(action.items),
+            items: SRItemsData,
+            filteredItems: SRItemsData,
             tree: action.tree,
             itemsLoading: false
         }
+    }
     case UPDATE_TAG_MAP: {
       const { name, value } = action;
       const tagMap = {
@@ -59,6 +63,12 @@ export default function itemsReducer(state = initialState, action) {
         activeTags
       };
     }
+    case FILTER_ITEMS:
+      return {
+        ...state,
+        filteredItems: state.items
+          .filter(item => item.name.toLowerCase().includes(action.filter.toLowerCase()))
+      };
   }
   return state;
 }

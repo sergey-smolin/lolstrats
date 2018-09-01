@@ -8,30 +8,27 @@ import ItemFilter from '../ItemFilter/ItemFilter';
 import ItemList from '../ItemList/ItemList';
 import RunesFilter from '../RunesFilter/RunesFilter';
 import RunesList from '../RunesList/RunesList';
-import Videos from '../Videos/Videos';
-import state from './state';
 import './styles.css';
+import { filterChampions } from '../../actions/champions';
+import { filterItems } from '../../actions/items';
 import {
   addActiveElement,
   removeActiveElement,
   addActiveCategory,
-  removeActiveCategory
+  removeActiveCategory,
+  setElementsFilter
 } from '../../actions/elements';
 
 const TOOLBAR_HEIGHT = 80;
-// const CHAMPION_TYPE = 'champions';
-// const ITEM_TYPE = 'items';
-// const RUNE_TYPE = 'runes';
-var esc = encodeURIComponent;
+const esc = encodeURIComponent;
 
 class Elements extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      ...state,
       fixedPosition: false,
-      filteredChampions: this.props.champions,
-      filteredItems: this.props.items
+      activeTabIndex: 0,
+      runesPath: 'Precision',
     };
     this.updateTagMap = this.updateTagMap.bind(this);
     this.updateRunesPath = this.updateRunesPath.bind(this);
@@ -50,18 +47,6 @@ class Elements extends Component {
   componentWillUnmount() {
     window.removeEventListener('scroll', this.handleScroll);
   }
-  componentWillReceiveProps(newProps) {
-    if (newProps.champions.length && !this.state.filteredChampions.length) {
-      this.setState({
-        filteredChampions: newProps.champions
-      })
-    }
-    if (newProps.items.length && !this.state.filteredItems.length) {
-      this.setState({
-        filteredItems: newProps.items
-      })
-    }
-  }
   handleScroll() {
     const { scrollTop } = document.documentElement;
     if (scrollTop > TOOLBAR_HEIGHT && !this.state.fixedPosition) {
@@ -77,12 +62,10 @@ class Elements extends Component {
     this.setState({ runesPath: update });
   }
   setActiveTab(activeTabIndex) {
-    this.setState({
-      activeTabIndex,
-      elementsFilter: '',
-      filteredChampions: this.props.champions,
-      filteredItems: this.props.items
-    });
+    this.setState({ activeTabIndex });
+    this.props.filterChampions('');
+    this.props.filterItems('');
+    this.props.setElementsFilter('');
   }
   toggleActiveCategory(category) {
     if (this.props.activeCategoriesMap[category.name]) {
@@ -148,19 +131,13 @@ class Elements extends Component {
   }
   filterElements(event) {
     const filter = event.target.value;
-    this.setState({ elementsFilter: filter });
+    this.props.setElementsFilter(filter);
     switch(this.state.activeTabIndex) {
       case 0:
-        this.setState({
-          filteredChampions: this.props.champions
-          .filter(champion => champion.name.toLowerCase().includes(filter.toLowerCase()))
-        })
+        this.props.filterChampions(filter)
         break;
       case 1:
-        this.setState({
-          filteredItems: this.props.items
-            .filter(item => item.name.toLowerCase().includes(filter.toLowerCase()))
-        });
+        this.props.filterItems(filter)
         break;
       default:
     }
@@ -169,14 +146,11 @@ class Elements extends Component {
     const itemsTab = this.props.itemsLoading ? 'Loading...' :
       <div className="items-selector-container">
         <ItemFilter tree={this.props.tree} />
-        <ItemList
-          items={this.state.filteredItems}
-          addActiveElement={this.addActiveElement}
-        />
+        <ItemList addActiveElement={this.addActiveElement} />
       </div>
     const championsTab = this.props.championsLoading ? 'Loading...' :
       <ChampionList
-        champions={this.state.filteredChampions}
+        champions={this.props.filteredChampions}
         addActiveElement={this.addActiveElement}
       />;
     const runesTab = this.props.runesLoading ? 'Loading...' :
@@ -197,15 +171,8 @@ class Elements extends Component {
         activeCategoriesMap={this.props.activeCategoriesMap}
         toggleActiveCategory={this.toggleActiveCategory}
       />
-    const videos = this.state.videos.length || this.state.youtubeVideos.length ?
-      <Videos
-        {...this.props}
-        videos={this.state.videos}
-        youtubeVideos={this.state.youtubeVideos}
-        closeVideoResults={this.closeVideoResults}
-      /> : null;
     const elementsFilter = [0, 1].includes(this.state.activeTabIndex) ?
-      <input className="elements-filter" type="text" value={this.state.elementsFilter}
+      <input className="elements-filter" type="text" value={this.props.elementsFilter}
         onChange={this.filterElements} placeholder="Filter..."/> : null;
 
     return (
@@ -256,7 +223,6 @@ class Elements extends Component {
             </div>
           </ul>
         </div>
-        {videos}
       </div>
     );
   }
@@ -266,14 +232,20 @@ const mapStateToProps = state => ({
   activeElements: state.elements.activeElements,
   activeElementsMap: state.elements.activeElementsMap,
   activeCategories: state.elements.activeCategories,
-  activeCategoriesMap: state.elements.activeCategoriesMap
+  activeCategoriesMap: state.elements.activeCategoriesMap,
+  elementsFilter: state.elements.elementsFilter,
+  filteredChampions: state.champions.filteredChampions,
+  filteredItems: state.items.filteredChampions
 });
 
 const mapDispatchToProps = {
   addActiveElement,
   removeActiveElement,
   addActiveCategory,
-  removeActiveCategory
+  removeActiveCategory,
+  setElementsFilter,
+  filterChampions,
+  filterItems
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Elements);

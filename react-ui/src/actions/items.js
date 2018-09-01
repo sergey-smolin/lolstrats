@@ -4,6 +4,7 @@ export const FETCH_ITEMS_START = 'FETCH_ITEMS_START';
 export const FETCH_ITEMS_SUCCESS = 'FETCH_ITEMS_SUCCESS';
 export const FETCH_ITEMS_ERROR = 'FETCH_ITEMS_ERROR';
 export const UPDATE_TAG_MAP = 'UPDATE_TAG_MAP';
+export const FILTER_ITEMS = 'FILTER_ITEMS';
 
 const requestItems = () => ({
     type: FETCH_ITEMS_START
@@ -33,3 +34,8 @@ export const updateTagMap = (name, value) => ({
     name,
     value
 });
+
+export const filterItems = filter => ({
+  type: FILTER_ITEMS,
+  filter
+})
