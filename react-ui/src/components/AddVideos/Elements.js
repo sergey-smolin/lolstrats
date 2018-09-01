@@ -36,11 +36,6 @@ class AddVideosElements extends Elements {
       this.props.history.replace('/login?redirect=add')
     }
   }
-  // componentDidUpdate(newProps) {
-  //   if (this.props.user !== null && newProps.user === null) {
-  //     this.props.history.replace('/login?redirect=add')
-  //   }
-  // }
   updateVideoURL(event) {
     const { value } = event.target;
     this.setState({ videoURL: value });
@@ -93,44 +88,42 @@ class AddVideosElements extends Elements {
     if (!result) return false;
     return result[4] || result[6];
   }
-  render() {
 
+  render() {
     return (
       <div className="elements-container">
-        <form>
-          <div className={classnames({
-            'add-video-controls': true,
-            'add-video-controls-fixed-position': this.state.fixedPosition
-          })}>
-            <div className="video-url-input-container">
-              <label>
-                <input
-                  type="text"
-                  name="videoURL"
-                  value={this.state.videoURL}
-                  className={classnames({ 'input-error': this.state.urlError })}
-                  onChange={this.updateVideoURL}
-                />
-                Youtube Video URL
-              </label>
-              {
-                this.state.urlError && <div className="url-error">
-                  Please enter a valid YouTube video url!
-                </div>
-              }
-            </div>
-            <ActiveElements
-              categories={this.props.activeCategories}
-              elements={this.props.activeElements}
-              removeActiveElement={this.removeActiveElement}
-              removeActiveCategory={this.removeActiveCategory}
-              searchCriteriaText="Click on icons below to specify a build"
-              actionButtonCallback={this.addVideo}
-              actionButtonText="Add"
-            />
+        <div className={classnames({
+          'add-video-controls': true,
+          'add-video-controls-fixed-position': this.state.fixedPosition
+        })}>
+          <div className="video-url-input-container">
+            <label>
+              <input
+                type="text"
+                name="videoURL"
+                value={this.state.videoURL}
+                className={classnames({ 'input-error': this.state.urlError })}
+                onChange={this.updateVideoURL}
+              />
+              Youtube Video URL
+            </label>
+            {
+              this.state.urlError && <div className="url-error">
+                Please enter a valid YouTube video url!
+              </div>
+            }
           </div>
-          {this.renderTabs('tabs-container-add-video-top-margin')}
-        </form>
+          <ActiveElements
+            categories={this.props.activeCategories}
+            elements={this.props.activeElements}
+            removeActiveElement={this.removeActiveElement}
+            removeActiveCategory={this.removeActiveCategory}
+            searchCriteriaText="Click on icons below to specify a build"
+            actionButtonCallback={this.addVideo}
+            actionButtonText="Add"
+          />
+        </div>
+        {this.renderTabs('tabs-container-add-video-top-margin')}
       </div>
     );
   }
