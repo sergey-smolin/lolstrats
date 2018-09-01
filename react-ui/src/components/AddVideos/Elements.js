@@ -143,7 +143,8 @@ const mapStateToProps = state => ({
   activeCategoriesMap: state.elements.activeCategoriesMap,
   elementsFilter: state.elements.elementsFilter,
   filteredChampions: state.champions.filteredChampions,
-  filteredItems: state.items.filteredChampions
+  filteredItems: state.items.filteredChampions,
+  userLoaded: state.user.userLoaded
 });
 
 const mapDispatchToProps = {
