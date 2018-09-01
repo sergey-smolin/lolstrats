@@ -3,12 +3,6 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import Elements from '../Elements/Elements'
 import ActiveElements from '../ActiveElements/ActiveElements';
-import Categories from '../Categories/Categories';
-import ChampionList from '../ChampionList/ChampionList';
-import ItemFilter from '../ItemFilter/ItemFilter';
-import ItemList from '../ItemList/ItemList';
-import RunesFilter from '../RunesFilter/RunesFilter';
-import RunesList from '../RunesList/RunesList';
 import { filterChampions } from '../../actions/champions';
 import { filterItems } from '../../actions/items';
 import {
@@ -100,37 +94,6 @@ class AddVideosElements extends Elements {
     return result[4] || result[6];
   }
   render() {
-    const itemsTab = this.props.itemsLoading ? 'Loading...' :
-      <div className="items-selector-container">
-        <ItemFilter tree={this.props.tree} />
-        <ItemList addActiveElement={this.addActiveElement} />
-      </div>
-    const championsTab = this.props.championsLoading ? 'Loading...' :
-      <ChampionList
-        champions={this.props.filteredChampions}
-        addActiveElement={this.addActiveElement}
-      />;
-    const runesTab = this.props.runesLoading ? 'Loading...' :
-      <div className="runes-selector-container">
-        <RunesFilter
-          runesPath={this.state.runesPath}
-          updateRunesPath={this.updateRunesPath}
-        />
-        <RunesList
-          runes={this.props.runes}
-          runesPath={this.state.runesPath}
-          addActiveElement={this.addActiveElement}
-        />
-      </div>
-    const categoriesTab = this.props.categoriesLoaing ? 'Loading...' :
-      <Categories
-        categories={this.props.categories}
-        activeCategoriesMap={this.props.activeCategoriesMap}
-        toggleActiveCategory={this.toggleActiveCategory}
-      />
-    const elementsFilter = [0, 1].includes(this.state.activeTabIndex) ?
-      <input className="elements-filter" type="text" value={this.props.elementsFilter}
-        onChange={this.filterElements} placeholder="Filter..."/> : null;
 
     return (
       <div className="elements-container">
