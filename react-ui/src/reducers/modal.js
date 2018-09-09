@@ -32,6 +32,7 @@ export default function modalReducer(state = initialState, action) {
                 ...state,
                 staticModalMessage: null
             };
+        default:
     }
     return state;
 }

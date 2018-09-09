@@ -87,6 +87,7 @@ export default function elementsReducer(state = initialState, action) {
         activeCategories: [],
         activeCategoriesMap: {}
       }
+    default:
   }
   return state;
 }

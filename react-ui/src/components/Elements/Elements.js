@@ -6,7 +6,6 @@ import ItemFilter from '../ItemFilter/ItemFilter';
 import ItemList from '../ItemList/ItemList';
 import RunesFilter from '../RunesFilter/RunesFilter';
 import RunesList from '../RunesList/RunesList';
-import './styles.css'
 
 const TOOLBAR_HEIGHT = 80;
 

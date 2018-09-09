@@ -1,4 +1,8 @@
-import { FETCH_USER_START, FETCH_USER_SUCCESS, SET_USER_DATA } from '../actions/user';
+import {
+  FETCH_USER_START,
+  FETCH_USER_SUCCESS,
+  SET_USER_DATA
+} from '../actions/user';
 
 const initialState = {
     userLoading: false,
@@ -25,6 +29,7 @@ export default function userReducer(state = initialState, action) {
                 ...state,
                 user: action.user
             }
+        default:
     }
     return state;
 }
