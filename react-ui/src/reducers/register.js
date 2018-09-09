@@ -32,7 +32,8 @@ export default function registerReducer(state = initialState, action) {
     case REGISTER_ERROR:
       return {
         ...state,
-        registerInProgress: false
+        registerInProgress: false,
+        responseError: action.error
       }
     case REGISTER_SET_USER_CREDENTIALS:
       return {
