@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import ItemListItem from '../ItemListItem/ItemListItem';
 import './styles.css';
 
@@ -29,4 +30,9 @@ class ItemList extends Component {
 
 }
 
-export default ItemList;
+const mapStateToProps = state => ({
+  activeTags: state.items.activeTags,
+  items: state.items.filteredItems,
+})
+
+export default connect(mapStateToProps)(ItemList);

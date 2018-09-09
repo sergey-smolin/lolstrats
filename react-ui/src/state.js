@@ -1,11 +1,9 @@
 export default {
   modalMessage: null,
-  items: [],
-  itemsLoading: false,
-  champions: [],
-  championsLoading: false,
   runes: [],
-  runesLoading: false,
+  runesLoading: true,
   categories: [],
-  categoriesLoaing: false,
+  categoriesMap: {},
+  categoriesLoaing: true,
+  allElementsLoaded: false
 }

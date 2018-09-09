@@ -9,11 +9,11 @@ class StaticModal extends Component {
       <div
         className={classnames({
           'modal-container': true,
-          'modal-container-visible': this.props.modalMessage
+          'modal-container-visible': this.props.staticModalMessage
         })}
       >
         <div className="modal-window">
-          {this.props.modalMessage}
+          {this.props.staticModalMessage}
         </div>
       </div>
     );

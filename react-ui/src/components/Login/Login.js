@@ -1,67 +1,43 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom'
+import { setUserData } from '../../actions/user';
+import { setFormUsed, setUserCredentials, login } from '../../actions/login';
 import RaisedButton from 'material-ui/RaisedButton';
 import queryString from 'query-string';
 import './styles.css';
 
 class Login extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      errors: {
-        usernameError: '',
-        passwordError: '',
-      },
-      username: '',
-      password: '',
-      responseError: ''
-    };
+  constructor() {
+    super();
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
   }
 
-  validateInputs() {
-    let stateUpdate = {};
-    if (this.state.username === '') {
-      stateUpdate = {
-        ...stateUpdate,
-        usernameError: 'Please enter a username'
-      }
+  componentDidUpdate(newProps) {
+    if (newProps.user) {
+      this.redirect();
     }
-    if (this.state.password === '') {
-      stateUpdate = {
-        ...stateUpdate,
-        passwordError: 'Please enter a password'
-      }
-    }
-    if (Object.keys(stateUpdate).length) {
-      this.setState({ errors: stateUpdate });
-      return false;
-    }
-    return true;
+  }
+
+  get isValid() {
+    return !this.props.usernameError && !this.props.passwordError;
   }
 
   handleSubmit() {
-    if (!this.validateInputs()) {
+    if (!this.props.formUsed) {
+      this.props.setFormUsed()
+    }
+    if (!this.isValid) {
       return;
     }
-    fetch('/api/login', {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      credentials: 'include',
-      body: JSON.stringify({
-        username: this.state.username,
-        password: this.state.password
-      })
-    }).then(res => res.json()).then(res => {
+    const { username, password } = this.props;
+    this.props.login(username, password).then(res => {
       if (res.result === 'error') {
-        this.setState({ responseError: res.message });
-      } else {
-        this.props.setUserData(res.data);
-        this.redirect();
+        return;
       }
+      this.props.setUserData(res.data)
+      this.redirect()
     })
   }
 
@@ -78,14 +54,14 @@ class Login extends Component {
 
   handleInputChange(event) {
     const { name, value } = event.target;
-    this.setState({ [name]: value });
+    this.props.setUserCredentials(name, value)
   }
 
   render() {
-    const { usernameError, passwordError } = this.state.errors;
+    const { formUsed, usernameError, passwordError } = this.props;
     return (
       <div className="register-container">
-        {this.state.responseError ? this.state.responseError : null}
+        {this.props.responseError ? this.props.responseError : null}
         <div>
           <div className="register-input-label">Username</div>
           <div className="register-input-container">
@@ -93,11 +69,12 @@ class Login extends Component {
               type="text"
               name="username"
               className="register-input"
-              value={this.state.username}
+              value={this.props.username}
+              onLoad={this.handleInputChange}
               onChange={this.handleInputChange}
             />
             <div className="register-error-message">
-              {usernameError ? usernameError : null}
+              {formUsed && usernameError ? usernameError : null}
             </div>
           </div>
         </div>
@@ -108,11 +85,11 @@ class Login extends Component {
               type="password"
               name="password"
               className="register-input"
-              value={this.state.password}
+              value={this.props.password}
               onChange={this.handleInputChange}
             />
             <div className="register-error-message">
-              {passwordError ? passwordError : null}
+              {formUsed && passwordError ? passwordError : null}
             </div>
           </div>
         </div>
@@ -129,4 +106,20 @@ class Login extends Component {
 
 }
 
-export default withRouter(Login);
+const mapStateToProps = state => ({
+  usernameError: state.login.username ? null : 'Please enter a username',
+  passwordError: state.login.password ? null : 'Please enter a password',
+  username: state.login.username,
+  password: state.login.password,
+  formUsed: state.login.formUsed,
+  responseError: state.login.responseError
+})
+
+const mapDispatchToProps = {
+  setUserCredentials,
+  setUserData,
+  setFormUsed,
+  login
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));

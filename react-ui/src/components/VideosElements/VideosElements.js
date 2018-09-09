@@ -7,12 +7,12 @@ class VideosElements extends Component {
     if (!this.props.champions.length) {
       return null;
     }
-    const jsx = Object.keys(this.props.parsedQuery).reduce((memo, next, idx) => {
+    const jsx = Object.keys(this.props.parsedQuery).reduce((memo, next) => {
       if (next === 'categories') {
         return memo;
       }
       const elementsArray = this.props.parsedQuery[next].split(',');
-      const elements = elementsArray.map(element => {
+      const elements = elementsArray.map((element, idx) => {
         let src;
         switch(next) {
           case 'champions':
@@ -46,7 +46,7 @@ class VideosElements extends Component {
           <ul>
             {this.props.parsedQuery.categories.split(',').map((category, idx) => <li key={idx}>
               <span>
-                {this.props.categoriesMap[category].name}
+                {this.props.categoriesMap[category]}
               </span>
             </li>)}
           </ul>

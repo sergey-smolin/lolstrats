@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { updateTagMap } from '../../actions/items';
 import './styles.css';
 
 class ItemFilter extends Component {
@@ -9,17 +11,7 @@ class ItemFilter extends Component {
   handleInputChange(event) {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
-    const name = target.name;
-    const tagMap = {
-      ...this.props.tagMap,
-      [name]: value
-    }
-    const activeTags = Object.keys(tagMap).reduce((memo, next) => {
-      if (tagMap[next]) return [ ...memo, next ];
-      return memo;
-    }, []);
-
-    this.props.updateTagMap({ tagMap, activeTags });
+    this.props.updateTagMap(target.name, value);
   }
 
   render() {
@@ -48,4 +40,12 @@ class ItemFilter extends Component {
 
 }
 
-export default ItemFilter;
+const mapStateToProps = state => ({
+  tagMap: state.items.tagMap,
+});
+
+const mapDispatchToProps = {
+  updateTagMap,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ItemFilter);

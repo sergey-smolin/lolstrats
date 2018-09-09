@@ -1,81 +1,36 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom'
 import RaisedButton from 'material-ui/RaisedButton';
+import { setFormUsed, setUserCredentials, register } from '../../actions/register';
 import './styles.css';
 
 class Register extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      errors: {
-        usernameError: '',
-        passwordError: '',
-        repeatPasswordError: '',
-      },
-      username: '',
-      password: '',
-      repeatPassword: '',
-      registrationSuccessful: false,
-      responseError: ''
-    };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.redirect = this.redirect.bind(this);
   }
 
-  validateInputs() {
-    let stateUpdate = {};
-    if (this.state.username === '') {
-      stateUpdate = {
-        ...stateUpdate,
-        usernameError: 'Please enter a username'
-      }
-    }
-    if (this.state.password === '') {
-      stateUpdate = {
-        ...stateUpdate,
-        passwordError: 'Please enter a password'
-      }
-    }
-    if (this.state.repeatPassword === '') {
-      stateUpdate = {
-        ...stateUpdate,
-        repeatPasswordError: 'Please repeat a password'
-      }
-    }
-    if (this.state.password && this.state.repeatPassword && this.state.password !== this.state.repeatPassword) {
-      stateUpdate = {
-        ...stateUpdate,
-        passwordError: 'Passwords do not match'
-      }
-    }
-    if (Object.keys(stateUpdate).length) {
-      this.setState({ errors: stateUpdate });
-      return false;
-    }
-    return true;
+  get isValid() {
+    const { usernameError, passwordError, repeatPasswordError } = this.props;
+    return !(usernameError || passwordError || repeatPasswordError);
   }
 
   handleSubmit() {
-    if (!this.validateInputs()) {
+    if (!this.props.formUsed) {
+      this.props.setFormUsed()
+    }
+    if (!this.isValid) {
       return;
     }
-    fetch('/api/register', {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        username: this.state.username,
-        password: this.state.password
-      })
-    }).then(res => res.json()).then(res => {
+    const { username, password } = this.props;
+    this.props.register(username, password).then(res => {
       if (res.result === 'error') {
-        this.setState({ responseError: res.message });
-      } else {
-        this.setState({ registrationSuccessful: true });
-        setTimeout(this.redirect, 2000);
+        return;
       }
+      setTimeout(this.redirect, 2000)
     })
   }
 
@@ -85,18 +40,18 @@ class Register extends Component {
 
   handleInputChange(event) {
     const { name, value } = event.target;
-    this.setState({ [name]: value });
+    this.props.setUserCredentials(name, value)
   }
 
   render() {
-    if (this.state.registrationSuccessful) {
+    if (this.props.registrationSuccessful) {
       return <div className="registration-successful">Registration successful, redirecting...</div>
     }
-    const { usernameError, passwordError, repeatPasswordError } = this.state.errors;
+    const { usernameError, passwordError, repeatPasswordError, formUsed } = this.props;
     return (
       <div className="register-container">
         <div className="registration-response-error">
-          {this.state.responseError ? this.state.responseError : null}
+          {this.props.responseError ? this.props.responseError : null}
         </div>
         <div>
           <div className="register-input-label">Username</div>
@@ -105,11 +60,11 @@ class Register extends Component {
               type="text"
               name="username"
               className="register-input"
-              value={this.state.username}
+              value={this.props.username}
               onChange={this.handleInputChange}
             />
             <div className="register-error-message">
-              {usernameError ? usernameError : null}
+              {formUsed && usernameError ? usernameError : null}
             </div>
           </div>
         </div>
@@ -120,11 +75,11 @@ class Register extends Component {
               type="password"
               name="password"
               className="register-input"
-              value={this.state.password}
+              value={this.props.password}
               onChange={this.handleInputChange}
             />
             <div className="register-error-message">
-              {passwordError ? passwordError : null}
+              {formUsed && passwordError ? passwordError : null}
             </div>
           </div>
         </div>
@@ -135,11 +90,11 @@ class Register extends Component {
               type="password"
               name="repeatPassword"
               className="register-input"
-              value={this.state.repeatPassword}
+              value={this.props.repeatPassword}
               onChange={this.handleInputChange}
             />
             <div className="register-error-message">
-              {repeatPasswordError ? repeatPasswordError : null}
+              {formUsed && repeatPasswordError ? repeatPasswordError : null}
             </div>
           </div>
         </div>
@@ -156,4 +111,22 @@ class Register extends Component {
 
 }
 
-export default withRouter(Register);
+const mapStateToProps = state => ({
+  usernameError: state.register.username ? null : 'Please enter a username',
+  passwordError: state.register.password ? null : 'Please enter a password',
+  repeatPasswordError: state.register.password === state.register.repeatPassword ?
+    null : 'Passwords do not match',
+  username: state.register.username,
+  password: state.register.password,
+  formUsed: state.register.formUsed,
+  responseError: state.register.responseError,
+  registrationSuccessful: state.register.registrationSuccessful
+})
+
+const mapDispatchToProps = {
+  setUserCredentials,
+  setFormUsed,
+  register
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Register));
