@@ -1,6 +1,5 @@
 import initialState from '../state';
 import {
-    FETCH_USER_ERROR,
     FETCH_RUNES_START,
     FETCH_RUNES_SUCCESS,
     FETCH_RUNES_ERROR,
@@ -22,35 +21,42 @@ const assembleCategoriesMap = (categories) => {
 }
 
 export default function rootReducer(state = initialState, action) {
-    switch (action.type) {
-        case FETCH_RUNES_START:
-            return {
-                ...state,
-                runesLoading: true
-            }
-        case FETCH_CATEGORIES_START:
-            return {
-                ...state,
-                categoriesLoading: true
-            }
-        case FETCH_RUNES_SUCCESS:
-            return {
-                ...state,
-                runes: action.runes,
-                runesLoading: false
-            }
-        case FETCH_CATEGORIES_SUCCESS:
-            return {
-                ...state,
-                categories: action.categories,
-                categoriesMap: assembleCategoriesMap(action.categories),
-                categoriesLoading: false
-            }
-        case ALL_ELEMENTS_LOADED:
-            return {
-                ...state,
-                allElementsLoaded: true
-            }
-    }
-    return state;
+  switch (action.type) {
+    case FETCH_RUNES_START:
+      return {
+        ...state,
+        runesLoading: true
+      }
+    case FETCH_CATEGORIES_START:
+      return {
+        ...state,
+        categoriesLoading: true
+      }
+    case FETCH_RUNES_SUCCESS:
+      return {
+        ...state,
+        runes: action.runes,
+        runesLoading: false
+      }
+    case FETCH_CATEGORIES_SUCCESS:
+      return {
+        ...state,
+        categories: action.categories,
+        categoriesMap: assembleCategoriesMap(action.categories),
+        categoriesLoading: false
+      }
+    case FETCH_RUNES_ERROR:
+      return {
+        ...state,
+        runesLoading: false
+      }
+    case FETCH_CATEGORIES_ERROR:
+    case ALL_ELEMENTS_LOADED:
+      return {
+        ...state,
+        allElementsLoaded: true
+      }
+    default:
+  }
+  return state;
 }

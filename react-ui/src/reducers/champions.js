@@ -31,12 +31,18 @@ export default function championsReducer(state = initialState, action) {
         championsLoading: false
       }
     }
+    case FETCH_CHAMPIONS_ERROR:
+      return {
+        ...state,
+        championsLoading: false
+      }
     case FILTER_CHAMPIONS:
       return {
         ...state,
         filteredChampions: state.champions
           .filter(champion => champion.name.toLowerCase().includes(action.filter.toLowerCase()))
       }
+    default:
   }
   return state;
 }

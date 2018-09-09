@@ -46,6 +46,11 @@ export default function itemsReducer(state = initialState, action) {
             itemsLoading: false
         }
     }
+    case FETCH_ITEMS_ERROR:
+      return {
+        ...state,
+        itemsLoading: false
+      }
     case UPDATE_TAG_MAP: {
       const { name, value } = action;
       const tagMap = {
@@ -69,6 +74,7 @@ export default function itemsReducer(state = initialState, action) {
         filteredItems: state.items
           .filter(item => item.name.toLowerCase().includes(action.filter.toLowerCase()))
       };
+    default:
   }
   return state;
 }

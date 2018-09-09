@@ -1,5 +1,4 @@
 import {
-    API_ENDPOINT_ITEMS,
     API_ENDPOINT_RUNES,
     API_ENDPOINT_CATEGORIES,
 } from '../constants/endpoints';

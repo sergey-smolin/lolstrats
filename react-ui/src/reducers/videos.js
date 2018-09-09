@@ -29,6 +29,11 @@ export default function videosReducer(state = initialState, action) {
         videos: action.videos,
         videosLoading: false
       }
+    case FETCH_VIDEOS_ERROR:
+      return {
+        ...state,
+        videosLoading: false
+      }
     case FETCH_YOUTUBE_VIDEOS_SUCCESS:
       return {
         ...state,
@@ -40,6 +45,7 @@ export default function videosReducer(state = initialState, action) {
         ...state,
         videoURL: ''
       }
+    default:
   }
   return state;
 }

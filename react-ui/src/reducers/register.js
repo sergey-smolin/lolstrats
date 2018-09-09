@@ -19,16 +19,21 @@ const initialState = {
 export default function registerReducer(state = initialState, action) {
   switch(action.type) {
     case REGISTER_START:
-        return {
-            ...state,
-            registerInProgress: true
-        }
+      return {
+        ...state,
+        registerInProgress: true
+      }
     case REGISTER_SUCCESS:
-        return {
-          ...state,
-          registerInProgress: false,
-          registrationSuccessful: true
-        }
+      return {
+        ...state,
+        registerInProgress: false,
+        registrationSuccessful: true
+      }
+    case REGISTER_ERROR:
+      return {
+        ...state,
+        registerInProgress: false
+      }
     case REGISTER_SET_USER_CREDENTIALS:
       return {
         ...state,
@@ -39,6 +44,7 @@ export default function registerReducer(state = initialState, action) {
         ...state,
         formUsed: true
       }
+    default:
   }
   return state;
 }

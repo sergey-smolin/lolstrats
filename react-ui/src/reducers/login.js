@@ -17,16 +17,21 @@ const initialState = {
 export default function loginReducer(state = initialState, action) {
   switch(action.type) {
     case LOGIN_START:
-        return {
-            ...state,
-            loginInProgress: true
-        }
+      return {
+        ...state,
+        loginInProgress: true
+      }
     case LOGIN_SUCCESS:
-        return {
-          ...state,
-          loginInProgress: false,
-          user: action.user
-        }
+      return {
+        ...state,
+        loginInProgress: false,
+        user: action.user
+      }
+    case LOGIN_ERROR:
+      return {
+        ...state,
+        loginInProgress: false
+      }
     case LOGIN_SET_USER_CREDENTIALS:
       return {
         ...state,
@@ -37,6 +42,7 @@ export default function loginReducer(state = initialState, action) {
         ...state,
         formUsed: true
       }
+    default:
   }
   return state;
 }

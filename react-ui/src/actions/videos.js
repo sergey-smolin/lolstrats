@@ -60,7 +60,7 @@ export const fetchVideos = (query, ytQuery) => dispatch => {
             err => dispatch(requestYouTubeVideosError(err))
           )
       },
-      err => dispatch(requestYouTubeVideosError(err))
+      err => dispatch(requestVideosError(err))
     );
 }
 
